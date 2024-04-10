@@ -1,12 +1,331 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\workshop\\projects\\EventBus\\src\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|solutionrelative:eventbus\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus\\eventbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|solutionrelative:eventbus\\eventbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus\\eventparam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|solutionrelative:eventbus\\eventparam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus\\handler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|solutionrelative:eventbus\\handler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus.abstractions\\ihandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|solutionrelative:eventbus.abstractions\\ihandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus.abstractions\\ieventparam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|solutionrelative:eventbus.abstractions\\ieventparam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus.abstractions\\ieventbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|solutionrelative:eventbus.abstractions\\ieventbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus.abstractions\\ievent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|solutionrelative:eventbus.abstractions\\ievent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus\\fundamental\\result.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|solutionrelative:eventbus\\fundamental\\result.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus.abstractions\\fundamental\\iresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|solutionrelative:eventbus.abstractions\\fundamental\\iresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus.abstractions\\enums\\eventstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|solutionrelative:eventbus.abstractions\\enums\\eventstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus.abstractions\\eventbus.abstractions.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{DA43E75D-763B-4D9D-A563-1AD5F40D1A14}|EventBus.Abstractions\\EventBus.Abstractions.csproj|solutionrelative:eventbus.abstractions\\eventbus.abstractions.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EventBus.Abstractions\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus\\eventbus.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|solutionrelative:eventbus\\eventbus.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|e:\\workshop\\projects\\eventbus\\src\\eventbus\\eventbus.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{4FB4A2E0-B36D-4B2D-BA87-2FCE2C9CD052}|EventBus\\EventBus.csproj|solutionrelative:eventbus\\eventbus.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\workshop\\projects\\EventBus\\src\\EventBus.API\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EventBus.API\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\workshop\\projects\\EventBus\\src\\EventBus\\IEvent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EventBus\\IEvent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\workshop\\projects\\EventBus\\src\\EventBus\\IEventBus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EventBus\\IEventBus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventStatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EventBus\\EventStatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Handler.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\Handler.cs",
+              "RelativeDocumentMoniker": "EventBus\\Handler.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\Handler.cs",
+              "RelativeToolTip": "EventBus\\Handler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACsAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T06:59:42.92Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "EventBus.Abstractions.csproj",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\EventBus.Abstractions.csproj",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\EventBus.Abstractions.csproj",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\EventBus.Abstractions.csproj",
+              "RelativeToolTip": "EventBus.Abstractions\\EventBus.Abstractions.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-04-10T06:25:29.86Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Event.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\Event.cs",
+              "RelativeDocumentMoniker": "EventBus\\Event.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\Event.cs",
+              "RelativeToolTip": "EventBus\\Event.cs",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAQwCwAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:55:25.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IHandler.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IHandler.cs",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\IHandler.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IHandler.cs",
+              "RelativeToolTip": "EventBus.Abstractions\\IHandler.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:49:30.38Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EventParam.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventParam.cs",
+              "RelativeDocumentMoniker": "EventBus\\EventParam.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventParam.cs",
+              "RelativeToolTip": "EventBus\\EventParam.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:47:47.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IEventBus.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IEventBus.cs",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\IEventBus.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IEventBus.cs",
+              "RelativeToolTip": "EventBus.Abstractions\\IEventBus.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:44:31.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IResult.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\Fundamental\\IResult.cs",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\Fundamental\\IResult.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\Fundamental\\IResult.cs",
+              "RelativeToolTip": "EventBus.Abstractions\\Fundamental\\IResult.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:44:23.169Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IEvent.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IEvent.cs",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\IEvent.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IEvent.cs",
+              "RelativeToolTip": "EventBus.Abstractions\\IEvent.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:43:18.423Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IEventParam.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IEventParam.cs",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\IEventParam.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\IEventParam.cs",
+              "RelativeToolTip": "EventBus.Abstractions\\IEventParam.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:40:08.568Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EventBus.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventBus.cs",
+              "RelativeDocumentMoniker": "EventBus\\EventBus.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventBus.cs",
+              "RelativeToolTip": "EventBus\\EventBus.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACMAAABCAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T04:48:51.458Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Result.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\Fundamental\\Result.cs",
+              "RelativeDocumentMoniker": "EventBus\\Fundamental\\Result.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\Fundamental\\Result.cs",
+              "RelativeToolTip": "EventBus\\Fundamental\\Result.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T06:42:39.119Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "EventStatus.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\Enums\\EventStatus.cs",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\Enums\\EventStatus.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\Enums\\EventStatus.cs",
+              "RelativeToolTip": "EventBus.Abstractions\\Enums\\EventStatus.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T06:36:30.994Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "EventBus.csproj",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventBus.csproj",
+              "RelativeDocumentMoniker": "EventBus\\EventBus.csproj",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventBus.csproj",
+              "RelativeToolTip": "EventBus\\EventBus.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-04-10T04:48:53.529Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "EventStatus.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventStatus.cs",
+              "RelativeDocumentMoniker": "EventBus\\EventStatus.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventStatus.cs",
+              "RelativeToolTip": "EventBus\\EventStatus.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T04:51:02.392Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "EventBus",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventBus.csproj",
+              "RelativeDocumentMoniker": "EventBus\\EventBus.csproj",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\EventBus.csproj",
+              "RelativeToolTip": "EventBus\\EventBus.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-04-10T04:53:26.223Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "IEventBus.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\IEventBus.cs",
+              "RelativeDocumentMoniker": "EventBus\\IEventBus.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\IEventBus.cs",
+              "RelativeToolTip": "EventBus\\IEventBus.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T04:59:20.282Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "IEvent.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\IEvent.cs",
+              "RelativeDocumentMoniker": "EventBus\\IEvent.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus\\IEvent.cs",
+              "RelativeToolTip": "EventBus\\IEvent.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:00:12.176Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\Class1.cs",
+              "RelativeDocumentMoniker": "EventBus.Abstractions\\Class1.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.Abstractions\\Class1.cs",
+              "RelativeToolTip": "EventBus.Abstractions\\Class1.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T05:03:02.432Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "E:\\workshop\\projects\\EventBus\\src\\EventBus.API\\Class1.cs",
+              "RelativeDocumentMoniker": "EventBus.API\\Class1.cs",
+              "ToolTip": "E:\\workshop\\projects\\EventBus\\src\\EventBus.API\\Class1.cs",
+              "RelativeToolTip": "EventBus.API\\Class1.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T04:47:40.724Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
