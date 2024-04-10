@@ -1,5 +1,4 @@
 ﻿using EventBus.Abstractions.Fundamental;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace EventBus.Abstractions;
 

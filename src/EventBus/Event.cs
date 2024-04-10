@@ -1,7 +1,6 @@
 ﻿using EventBus.Abstractions;
 using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.Fundamental;
-using Microsoft.VisualBasic.FileIO;
 
 namespace EventBus;
 
