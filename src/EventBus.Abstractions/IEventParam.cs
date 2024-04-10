@@ -1,7 +1,6 @@
-﻿using EventBus.Abstractions.Enums;
+﻿using Shoming.EventBus.Abstractions.Enums;
 
-namespace EventBus.Abstractions;
-
+namespace Shoming.EventBus.Abstractions;
 public interface IEventParam
 {
     EventStatus Status { get; set; }

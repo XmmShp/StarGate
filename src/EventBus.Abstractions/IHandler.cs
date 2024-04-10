@@ -1,7 +1,6 @@
-﻿using EventBus.Abstractions.Fundamental;
+﻿using Shoming.EventBus.Abstractions.Fundamental;
 
-namespace EventBus.Abstractions;
-
+namespace Shoming.EventBus.Abstractions;
 public interface IHandler
 {
     delegate void Functor(IEventParam eventParam);
@@ -11,6 +10,6 @@ public interface IHandler
 
 public interface IHandler<out T> : IHandler
 {
-    delegate T Functor(IEventParam eventParam);
+    new delegate T Functor(IEventParam eventParam);
     new IResult<T> Invoke(IEventParam eventParam);
 }

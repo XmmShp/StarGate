@@ -1,8 +1,7 @@
-﻿using EventBus.Abstractions.Enums;
-using EventBus.Abstractions.Fundamental;
+﻿using Shoming.EventBus.Abstractions.Enums;
+using Shoming.EventBus.Abstractions.Fundamental;
 
-namespace EventBus.Fundamental;
-
+namespace Shoming.EventBus.Fundamental;
 public class Result(EventStatus status) : IResult
 {
     public EventStatus Status { get; } = status;

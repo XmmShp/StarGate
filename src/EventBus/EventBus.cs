@@ -1,6 +1,5 @@
-﻿using EventBus.Abstractions;
-namespace EventBus;
-
+﻿using Shoming.EventBus.Abstractions;
+namespace Shoming.EventBus;
 public class EventBus : IEventBus
 {
     public IEvent AddEvent(string eventName) => _events[eventName] = new Event();

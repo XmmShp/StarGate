@@ -1,9 +1,8 @@
-﻿using EventBus.Abstractions;
-using EventBus.Abstractions.Enums;
-using EventBus.Abstractions.Fundamental;
+﻿using Shoming.EventBus.Abstractions;
+using Shoming.EventBus.Abstractions.Enums;
+using Shoming.EventBus.Abstractions.Fundamental;
 
-namespace EventBus;
-
+namespace Shoming.EventBus;
 public class Event : IEvent
 {
     public IResult Invoke(IEventParam param)

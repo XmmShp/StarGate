@@ -1,8 +1,7 @@
-﻿namespace EventBus.Abstractions.Enums;
-
+﻿namespace Shoming.EventBus.Abstractions.Enums;
 public enum EventStatus
 {
-    Continued=0,
+    Continued = 0,
     Interrupted,
     ParamChanged
 }

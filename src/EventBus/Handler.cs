@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
-using EventBus.Abstractions;
-using EventBus.Abstractions.Enums;
-using EventBus.Abstractions.Fundamental;
-using EventBus.Fundamental;
-using static EventBus.Abstractions.IHandler;
+using Shoming.EventBus.Abstractions;
+using Shoming.EventBus.Abstractions.Enums;
+using Shoming.EventBus.Abstractions.Fundamental;
+using Shoming.EventBus.Fundamental;
 
-namespace EventBus;
-
+namespace Shoming.EventBus;
 public class Handler : IHandler
 {
     public Handler()
@@ -14,7 +12,7 @@ public class Handler : IHandler
         Method = null!;
         Target = null!;
     }
-    public Handler(Functor functor)
+    public Handler(IHandler.Functor functor)
     {
         Method = functor.Method;
         Target = functor.Target is null ? null : new WeakReference(functor.Target);
