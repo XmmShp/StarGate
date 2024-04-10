@@ -6,8 +6,6 @@
 # Intellij IDEA Series
 .idea/
 
-src/Ptr/Properties/launchSettings.json
-
 # User-specific files
 *.rsuser
 *.suo
