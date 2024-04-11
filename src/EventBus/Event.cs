@@ -1,6 +1,5 @@
 ﻿using Shoming.EventBus.Abstractions;
 using Shoming.EventBus.Abstractions.Enums;
-using Shoming.EventBus.Abstractions.Fundamental;
 
 namespace Shoming.EventBus;
 public class Event : IEvent
