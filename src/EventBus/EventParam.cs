@@ -88,19 +88,14 @@ public class EventParam : IEventParam
 
     public bool TrySetName(int index, string name)
     {
-        if (index < 0 || index >= _values.Count || _map.ContainsKey(name))
-        {
-            return false;
-        }
+        if (_map.ContainsKey(name)) return false;
         SetName(index, name);
         return true;
     }
 
     public bool Remove(string name)
     {
-        if (!_map.Remove(name, out var index)) return false;
-        _values.RemoveAt(index);
-        return true;
+        return _map.Remove(name, out var index) && Remove(index);
     }
 
     private readonly List<object?> _values;
