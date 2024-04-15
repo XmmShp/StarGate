@@ -1,5 +1,5 @@
-﻿using Shoming.EventBus.Abstractions.Enums;
-namespace Shoming.EventBus.Abstractions;
+﻿using EventBus.Enums;
+namespace EventBus.Abstractions;
 /// <summary>
 /// Represents an interface for the result of an event processing operation, providing access to the status of the operation.
 /// </summary>

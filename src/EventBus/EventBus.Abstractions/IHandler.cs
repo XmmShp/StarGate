@@ -1,4 +1,4 @@
-﻿namespace Shoming.EventBus.Abstractions;
+﻿namespace EventBus.Abstractions;
 /// <summary>
 /// Defines an interface for an event handling component, providing a delegate for processing events and a method to invoke the handler.
 /// </summary>

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net;
-using Shoming.EventBus.Abstractions;
-using Shoming.EventBus.Abstractions.Enums;
+﻿using EventBus.Abstractions;
+using EventBus.Enums;
 
-namespace Shoming.EventBus;
+namespace EventBus;
 
 internal class NullKey;
 public class EventBus : IEventBus

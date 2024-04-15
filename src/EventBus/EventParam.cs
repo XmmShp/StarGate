@@ -1,7 +1,7 @@
-﻿using Shoming.EventBus.Abstractions;
-using Shoming.EventBus.Abstractions.Enums;
+﻿using EventBus.Abstractions;
+using EventBus.Enums;
 
-namespace Shoming.EventBus;
+namespace EventBus;
 public class EventParam : IEventParam
 {
     public EventParam()

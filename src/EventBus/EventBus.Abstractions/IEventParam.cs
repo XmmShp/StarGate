@@ -1,6 +1,6 @@
-﻿using Shoming.EventBus.Abstractions.Enums;
+﻿using EventBus.Enums;
 
-namespace Shoming.EventBus.Abstractions;
+namespace EventBus.Abstractions;
 /// <summary>
 /// Defines an interface for event parameters, providing management functionality for event arguments.
 /// </summary>

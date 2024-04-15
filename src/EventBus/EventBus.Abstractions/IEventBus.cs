@@ -1,6 +1,6 @@
-﻿using Shoming.EventBus.Abstractions.Enums;
+﻿using EventBus.Enums;
 
-namespace Shoming.EventBus.Abstractions;
+namespace EventBus.Abstractions;
 
 internal class SomeOne;
 internal class All;

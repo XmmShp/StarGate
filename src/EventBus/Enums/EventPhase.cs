@@ -1,4 +1,4 @@
-﻿namespace Shoming.EventBus.Abstractions.Enums;
+﻿namespace EventBus.Enums;
 
 public enum EventPhase
 {
