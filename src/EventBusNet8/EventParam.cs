@@ -5,14 +5,8 @@ using EventBusNet8.Enums;
 namespace EventBusNet8;
 public class EventParam : IEventParam
 {
-    public EventParam()
-    {
-        _values = [];
-    }
-    public EventParam(IEnumerable<object?> values)
-    {
-        _values = new List<object?>(values);
-    }
+    public EventParam() => _values = [];
+    public EventParam(IEnumerable<object?> values) => _values = values.ToList();
 
     public EventParam(IDictionary values)
     {
