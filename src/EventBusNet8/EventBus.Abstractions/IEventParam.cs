@@ -1,6 +1,6 @@
-﻿using EventBus.Enums;
+﻿using EventBusNet8.Enums;
 
-namespace EventBus.Abstractions;
+namespace EventBusNet8.Abstractions;
 /// <summary>
 /// Defines an interface for event parameters, providing management functionality for event arguments.
 /// </summary>

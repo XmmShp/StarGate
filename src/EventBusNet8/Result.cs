@@ -1,7 +1,7 @@
-﻿using EventBus.Abstractions;
-using EventBus.Enums;
+﻿using EventBusNet8.Abstractions;
+using EventBusNet8.Enums;
 
-namespace EventBus;
+namespace EventBusNet8;
 public class Result(EventStatus status) : IResult
 {
     public EventStatus Status { get; } = status;

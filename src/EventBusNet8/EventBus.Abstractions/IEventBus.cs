@@ -1,6 +1,6 @@
-﻿using EventBus.Enums;
+﻿using EventBusNet8.Enums;
 
-namespace EventBus.Abstractions;
+namespace EventBusNet8.Abstractions;
 
 internal class SomeOne;
 internal class All;

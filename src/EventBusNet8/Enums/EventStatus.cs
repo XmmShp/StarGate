@@ -1,4 +1,4 @@
-﻿namespace EventBus.Enums;
+﻿namespace EventBusNet8.Enums;
 public enum EventStatus
 {
     Continued = 0,

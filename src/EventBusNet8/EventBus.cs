@@ -1,7 +1,7 @@
-﻿using EventBus.Abstractions;
-using EventBus.Enums;
+﻿using EventBusNet8.Abstractions;
+using EventBusNet8.Enums;
 
-namespace EventBus;
+namespace EventBusNet8;
 
 internal class NullKey;
 public class EventBus : IEventBus

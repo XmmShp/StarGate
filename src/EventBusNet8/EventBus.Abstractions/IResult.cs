@@ -1,5 +1,5 @@
-﻿using EventBus.Enums;
-namespace EventBus.Abstractions;
+﻿using EventBusNet8.Enums;
+namespace EventBusNet8.Abstractions;
 /// <summary>
 /// Represents an interface for the result of an event processing operation, providing access to the status of the operation.
 /// </summary>
