@@ -1,21 +1,22 @@
-﻿namespace Shoming.EventBus.Abstractions;
+﻿using Shoming.EventBus.Abstractions.Enums;
+
+namespace Shoming.EventBus.Abstractions;
 /// <summary>
 /// Represents an interface for an event, defining methods for invoking an event handler and registering listeners.
 /// </summary>
 public interface IEvent
 {
-    /// <summary>
-    /// Invokes the event with the provided event parameters, passing them to the subscribed handler.
-    /// </summary>
-    /// <param name="handler">The event parameters to be passed to the handler.</param>
-    /// <returns>The result of the event invocation, represented as a <see cref="IResult"/> object.</returns>
-    IResult Invoke(IEventParam handler);
+    IResult Invoke(IEventParam param);
+    void Unload(IEventParam param);
 
     /// <summary>
     /// Registers an event listener to receive notifications when the event is triggered.
     /// </summary>
     /// <param name="handler">The event listener instance that will be notified when the event occurs.</param>
-    void ListenEvent(IHandler handler);
+    /// <param name="phase">The phase of the event to listen for, pre,peri or post.</param>
+    void ListenEvent(IHandler handler, EventPhase phase);
+    string Name { get; }
+    object Key { get; }
 }
 
 /// <summary>
@@ -35,5 +36,6 @@ public interface IEvent<T> : IEvent
     /// Registers a typed event listener to receive notifications when the event is triggered.
     /// </summary>
     /// <param name="handler">The typed event listener instance that will be notified when the event occurs.</param>
-    void ListenEvent(IHandler<T> handler);
+    /// <param name="phase">The phase of the event to listen for, pre,peri or post.</param>
+    void ListenEvent(IHandler<T> handler, EventPhase phase);
 }

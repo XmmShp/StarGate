@@ -1,53 +1,63 @@
-﻿namespace Shoming.EventBus.Abstractions;
+﻿using Shoming.EventBus.Abstractions.Enums;
+
+namespace Shoming.EventBus.Abstractions;
+
+internal class SomeOne;
+internal class All;
+internal class SomeOneButNullPrefer;
+
 /// <summary>
 /// Defines an interface for an event bus, responsible for managing and dispatching events.
 /// </summary>
 public interface IEventBus
 {
-    /// <summary>
-    /// Adds an event to the event bus with the specified name.
-    /// </summary>
-    /// <param name="eventName">The unique name of the event.</param>
-    /// <returns>The newly created event instance.</returns>
-    IEvent AddEvent(string eventName);
+    public static object SomeOne { get; } = new SomeOne();
+    public static object All { get; } = new All();
+    public static object SomeOneButNullPrefer { get; } = new SomeOneButNullPrefer();
 
-    /// <summary>
-    /// Attempts to add an event to the event bus with the specified name.
-    /// </summary>
-    /// <param name="eventName">The unique name of the event.</param>
-    /// <param name="value">When this method returns, contains the added event instance if successful, or null if the event couldn't be added.</param>
-    /// <returns><see langword="true"/> if the event with specified name doesn't exist; otherwise, <see langword="false"/>.</returns>
-    bool TryAddEvent(string eventName, out IEvent value);
+    bool TryAddEvent(string eventNam, object? key, out IEvent value);
+    bool TryAddEvent<T>(string eventName, object? key, out IEvent<T> value);
+    bool TryListenEvent(string eventName, object? key, IHandler handler, EventPhase phase = EventPhase.Peri);
+    bool TryListenEvent<T>(string eventName, object? key, IHandler<T> handler, EventPhase phase = EventPhase.Peri);
+    void RemoveEvent(string eventName, object? key, bool doUnload = true);
 
-    /// <summary>
-    /// Adds a typed event to the event bus with the specified name.
-    /// </summary>
-    /// <typeparam name="T">The type parameter for the return type.</typeparam>
-    /// <param name="eventName">The unique name of the event.</param>
-    /// <returns>The newly created event instance.</returns>
-    IEvent<T> AddEvent<T>(string eventName);
+    #region Derived Functions
+    bool TryAddEvent(string eventName, out IEvent value) => TryAddEvent(eventName, null, out value);
+    IEvent AddEvent(string eventName, object? key)
+    {
+        if (key == SomeOneButNullPrefer || key == SomeOne || key == All)
+            throw new ArgumentException("Special Key is not supported here.");
+        // ReSharper disable once SuggestVarOrType_SimpleTypes
+        return TryAddEvent(eventName, key, out IEvent value) ? value : throw new InvalidOperationException($"Event \"{eventName}\" already exists.");
+    }
+    IEvent AddEvent(string eventName) => AddEvent(eventName, null);
 
-    /// <summary>
-    /// Attempts to add a typed event to the event bus with the specified name.
-    /// </summary>
-    /// <typeparam name="T">The type parameter for the return type.</typeparam>
-    /// <param name="eventName">The unique name of the event.</param>
-    /// <param name="value">When this method returns, contains the added event instance if successful, or null if the event couldn't be added.</param>
-    /// <returns><see langword="true"/> if the event with specified name doesn't exist; otherwise, <see langword="false"/>.</returns>
-    bool TryAddEvent<T>(string eventName, out IEvent<T> value);
+    bool TryAddEvent<T>(string eventName, out IEvent<T> value) => TryAddEvent(eventName, null, out value);
+    IEvent<T> AddEvent<T>(string eventName, object? key)
+    {
+        if (key == SomeOneButNullPrefer || key == SomeOne || key == All)
+            throw new ArgumentException("Special Key is not supported here.");
+        return TryAddEvent(eventName, key, out IEvent<T> value) ? value : throw new InvalidOperationException($"Event \"{eventName}\" already exists.");
+    }
+    IEvent<T> AddEvent<T>(string eventName) => AddEvent<T>(eventName, null!);
 
-    /// <summary>
-    /// Registers a handler to listen for events with the specified name.
-    /// </summary>
-    /// <param name="eventName">The name of the event to which the handler should subscribe.</param>
-    /// <param name="handler">The handler instance that will process events when they are dispatched.</param>
-    void ListenEvent(string eventName, IHandler handler);
+    bool TryListenEvent(string eventName, IHandler handler, EventPhase phase = EventPhase.Peri) => TryListenEvent(eventName, SomeOneButNullPrefer, handler, phase);
+    void ListenEvent(string eventName, object? key, IHandler handler, EventPhase phase = EventPhase.Peri)
+    {
+        if (!TryListenEvent(eventName, key, handler, phase))
+            throw new InvalidOperationException($"Event does not exist.");
+    }
+    void ListenEvent(string eventName, IHandler handler, EventPhase phase = EventPhase.Peri) => ListenEvent(eventName, SomeOneButNullPrefer, handler, phase);
 
-    /// <summary>
-    /// Attempts to register a handler to listen for events with the specified name.
-    /// </summary>
-    /// <param name="eventName">The name of the event to which the handler should subscribe.</param>
-    /// <param name="handler">The handler instance that will process events when they are dispatched.</param>
-    /// <returns><see langword="true"/> if the event was existed; otherwise, <see langword="false"/>.</returns>
-    bool TryListenEvent(string eventName, IHandler handler);
+    bool TryListenEvent<T>(string eventName, IHandler<T> handler, EventPhase phase = EventPhase.Peri) => TryListenEvent(eventName, SomeOneButNullPrefer, handler, phase);
+    void ListenEvent<T>(string eventName, object? key, IHandler<T> handler, EventPhase phase = EventPhase.Peri)
+    {
+        if (!TryListenEvent(eventName, key, handler, phase))
+            throw new InvalidOperationException("Event does not exist or return type is not compatible.");
+    }
+    void ListenEvent<T>(string eventName, IHandler<T> handler, EventPhase phase = EventPhase.Peri) => ListenEvent(eventName, SomeOneButNullPrefer, handler, phase);
+
+    void RemoveEvent(string eventName) => RemoveEvent(eventName, All);
+    void RemoveEvent(IEvent @event) => RemoveEvent(@event.Name, @event.Key);
+    #endregion
 }
