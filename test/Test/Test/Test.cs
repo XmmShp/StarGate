@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using EventBusNet8;
+﻿using EventBusNet8;
 using EventBusNet8.Abstractions;
 using EventBusNet8.Enums;
 

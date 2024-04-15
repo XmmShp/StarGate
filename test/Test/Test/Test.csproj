@@ -8,9 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="EventBusNet8">
-      <HintPath>..\..\..\src\EventBusNet8\bin\Release\net8.0\EventBusNet8.dll</HintPath>
-    </Reference>
+    <PackageReference Include="EventBusNet8" Version="1.3.2" />
   </ItemGroup>
 
 </Project>
