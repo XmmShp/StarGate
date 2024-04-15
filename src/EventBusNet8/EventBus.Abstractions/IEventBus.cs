@@ -19,7 +19,7 @@ public interface IEventBus
     bool TryAddEvent<T>(string eventName, object? key, out IEvent<T> value);
     bool TryListenEvent(string eventName, object? key, IHandler handler, EventPhase phase = EventPhase.Peri);
     bool TryListenEvent<T>(string eventName, object? key, IHandler<T> handler, EventPhase phase = EventPhase.Peri);
-    void RemoveEvent(string eventName, object? key, bool doUnload = true);
+    void RemoveEvent(IEvent @event);
 
     #region Derived Functions
     bool TryAddEvent(string eventName, out IEvent value) => TryAddEvent(eventName, null, out value);
@@ -56,8 +56,5 @@ public interface IEventBus
             throw new InvalidOperationException("Event does not exist or return type is not compatible.");
     }
     void ListenEvent<T>(string eventName, IHandler<T> handler, EventPhase phase = EventPhase.Peri) => ListenEvent(eventName, SomeOneButNullPrefer, handler, phase);
-
-    void RemoveEvent(string eventName) => RemoveEvent(eventName, All);
-    void RemoveEvent(IEvent @event) => RemoveEvent(@event.Name, @event.Key);
     #endregion
 }

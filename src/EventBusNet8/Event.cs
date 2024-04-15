@@ -11,7 +11,7 @@ internal class Event(string name, object key, IEventBus eventBus) : IEvent
         if (result.Status != EventStatus.Interrupted)
             result = InvokePhase(param, EventPhase.Peri);
         if (result.Status != EventStatus.Interrupted)
-            result = InvokePhase(param, EventPhase.Post);
+            InvokePhase(param, EventPhase.Post);
         return result;
     }
 
@@ -59,7 +59,7 @@ internal class Event<T>(string name, object key, IEventBus eventBus) : Event(nam
         if (result.Status != EventStatus.Interrupted)
             result = InvokePhase(param, EventPhase.Peri);
         if (result.Status != EventStatus.Interrupted)
-            result = InvokePhase(param, EventPhase.Post);
+            InvokePhase(param, EventPhase.Post);
         return result;
     }
 

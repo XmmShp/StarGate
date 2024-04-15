@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="EventBus">
-      <HintPath>..\..\..\src\EventBus\bin\Release\net8.0\EventBus.dll</HintPath>
+    <Reference Include="EventBusNet8">
+      <HintPath>..\..\..\src\EventBusNet8\bin\Release\net8.0\EventBusNet8.dll</HintPath>
     </Reference>
   </ItemGroup>
 

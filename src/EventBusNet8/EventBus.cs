@@ -8,6 +8,9 @@ public class EventBus : IEventBus
 {
     private readonly object _nullKey = new NullKey();
 
+    public void RemoveEvent(IEvent @event) => RemoveEvent(@event.Name, @event.Key, false);
+    public void RemoveEvent(string eventName) => RemoveEvent(eventName, IEventBus.All, true);
+
     public bool TryAddEvent(string eventName, object? key, out IEvent value)
     {
         if (key == IEventBus.All || key == IEventBus.SomeOne || key == IEventBus.SomeOneButNullPrefer)
