@@ -1,43 +1,89 @@
 ﻿using Shoming.EventBus.Abstractions;
 using Shoming.EventBus.Abstractions.Enums;
-using Shoming.EventBus.Abstractions.Fundamental;
 
 namespace Shoming.EventBus;
-public class Event : IEvent
+
+internal class Event(string name, object key, IEventBus eventBus) : IEvent
 {
     public IResult Invoke(IEventParam param)
     {
-        IResult res = null!;
-        foreach (var handler in _handlers.TakeWhile(_ => param.Status != EventStatus.Interrupted))
+        var result = InvokePhase(param, EventPhase.Pre);
+        if (result.Status != EventStatus.Interrupted)
+            result = InvokePhase(param, EventPhase.Peri);
+        if (result.Status != EventStatus.Interrupted)
+            result = InvokePhase(param, EventPhase.Post);
+        return result;
+    }
+
+    public void Unload(IEventParam param)
+    {
+        EventBus.RemoveEvent(this);
+        foreach (var handler in _handlers[EventPhase.Unload])
+        {
+            handler.Invoke(param);
+        }
+    }
+
+    protected IResult InvokePhase(IEventParam param, EventPhase phase)
+    {
+        IResult res = new Result(EventStatus.Continued);
+        foreach (var handler in _handlers[phase].TakeWhile(_ => param.Status != EventStatus.Interrupted))
         {
             res = handler.Invoke(param);
         }
         return res;
     }
 
-    public void ListenEvent(IHandler handler)
+    public void ListenEvent(IHandler handler, EventPhase phase)
     {
-        _handlers.Add(handler);
+        _handlers[phase].Add(handler);
     }
-    private readonly List<IHandler> _handlers = [];
+
+    private readonly Dictionary<EventPhase, List<IHandler>> _handlers = new()
+    {
+        { EventPhase.Pre ,[]},
+        { EventPhase.Peri ,[]},
+        { EventPhase.Post ,[]},
+        { EventPhase.Unload ,[]}
+    };
+
+    public string Name { get; } = name;
+    public object Key { get; } = key;
+    protected IEventBus EventBus { get; } = eventBus;
 }
-public class Event<T> : Event, IEvent<T>
+internal class Event<T>(string name, object key, IEventBus eventBus) : Event(name, key, eventBus), IEvent<T>
 {
     public new IResult<T> Invoke(IEventParam param)
     {
-        base.Invoke(param);
-        IResult<T> res = null!;
-        foreach (var handler in _handlers.TakeWhile(_ => param.Status != EventStatus.Interrupted))
+        var result = InvokePhase(param, EventPhase.Pre);
+        if (result.Status != EventStatus.Interrupted)
+            result = InvokePhase(param, EventPhase.Peri);
+        if (result.Status != EventStatus.Interrupted)
+            result = InvokePhase(param, EventPhase.Post);
+        return result;
+    }
+
+    protected new IResult<T> InvokePhase(IEventParam param, EventPhase phase)
+    {
+        IResult<T> res = new Result<T>(default, base.InvokePhase(param, phase).Status);
+        foreach (var handler in _typedHandlers[phase].TakeWhile(_ => param.Status != EventStatus.Interrupted))
         {
             res = handler.Invoke(param);
         }
         return res;
     }
 
-    public void ListenEvent(IHandler<T> handler)
+    public void ListenEvent(IHandler<T> handler, EventPhase phase)
     {
-        _handlers.Add(handler);
+        if (phase is EventPhase.Unload)
+            throw new InvalidOperationException("Unload phase is not supported for typed event.");
+        _typedHandlers[phase].Add(handler);
     }
 
-    private readonly List<IHandler<T>> _handlers = [];
+    private readonly Dictionary<EventPhase, List<IHandler<T>>> _typedHandlers = new()
+    {
+        { EventPhase.Pre ,[]},
+        { EventPhase.Peri ,[]},
+        { EventPhase.Post ,[]}
+    };
 }

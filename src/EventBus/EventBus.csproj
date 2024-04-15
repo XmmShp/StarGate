@@ -12,7 +12,7 @@
 		<RepositoryUrl>https://github.com/XmmShp/EventBus.git</RepositoryUrl>
 		<PackageTags>Event;EventBus;PluginSystem;</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.0.1</Version>
+		<Version>1.2.0</Version>
 		<PackageProjectUrl>https://www.nuget.org/packages/Shoming.EventBus</PackageProjectUrl>
 		<Title>EventBus</Title>
 	</PropertyGroup>
