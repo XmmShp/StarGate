@@ -16,5 +16,5 @@ public class EventResult<T>(T? @return, EventStatus status) : EventResult(status
     public static implicit operator EventResult<T>(T? @return) => new(@return, EventStatus.Interrupted);
     public static implicit operator EventResult<T>(EventStatus status) => new(default, status);
     public static implicit operator T?(EventResult<T> eventResult) => eventResult.Return;
-    public static implicit operator EventStatus(EventResult<T> result) => result.Status;
+    public static implicit operator EventStatus(EventResult<T> result) => result.Status; 
 }

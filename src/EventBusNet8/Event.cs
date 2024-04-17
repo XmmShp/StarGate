@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
-using EventBusNet8.Abstractions;
+﻿using EventBusNet8.Abstractions;
 using EventBusNet8.Adapter;
 using EventBusNet8.Enums;
 using EventBusNet8.Fundamental;
@@ -37,10 +35,7 @@ internal class Event(string name, object key, IEventBus eventBus) : IEvent
         return param.Status;
     }
 
-    public void ListenEvent(Handler handler, EventPhase phase)
-    {
-        Handlers[phase].Add(handler);
-    }
+    public void ListenEvent(Functor handler, EventPhase phase) => Handlers[phase].Add(new Handler(handler));
 
     protected readonly Dictionary<EventPhase, List<Handler>> Handlers = new()
     {
@@ -83,12 +78,12 @@ internal class Event<T>(string name, object key, IEventBus eventBus) : Event(nam
         return (res, param.Status);
     }
 
-    public void ListenEvent(Handler<T> handler, EventPhase phase)
+    public void ListenEvent(Functor<T> handler, EventPhase phase)
     {
         if (phase is EventPhase.Unload)
-            Handlers[phase].Add(handler);
+            Handlers[phase].Add(new Handler<T>(handler));
         else
-            _typedHandlers[phase].Add(handler);
+            _typedHandlers[phase].Add(new Handler<T>(handler));
     }
 
     private readonly Dictionary<EventPhase, List<Handler<T>>> _typedHandlers = new()

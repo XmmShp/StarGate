@@ -1,4 +1,5 @@
-﻿using EventBusNet8.Enums;
+﻿using System.Collections;
+using EventBusNet8.Enums;
 
 namespace EventBusNet8.Abstractions;
 /// <summary>

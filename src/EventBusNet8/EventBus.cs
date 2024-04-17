@@ -50,7 +50,7 @@ public class EventBus : IEventBus
         return true;
     }
 
-    public bool TryListenEvent(string eventName, object? key, Handler handler, EventPhase phase)
+    public bool TryListenEvent(string eventName, object? key, Functor handler, EventPhase phase)
     {
         if (!_events.TryGetValue(eventName, out var events)) return false;//no event
 
@@ -116,7 +116,7 @@ public class EventBus : IEventBus
         }
     }
 
-    public bool TryListenEvent<T>(string eventName, object? key, Handler<T> handler, EventPhase phase)
+    public bool TryListenEvent<T>(string eventName, object? key, Functor<T> handler, EventPhase phase)
     {
         if (!_events.TryGetValue(eventName, out var events)) return false;//no event
 

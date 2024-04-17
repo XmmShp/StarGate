@@ -9,8 +9,8 @@ public interface IEventBus
 {
     bool TryAddEvent(string eventNam, object? key, out IEvent value);
     bool TryAddEvent<T>(string eventName, object? key, out IEvent<T> value);
-    bool TryListenEvent(string eventName, object? key, Handler handler, EventPhase phase = EventPhase.On);
-    bool TryListenEvent<T>(string eventName, object? key, Handler<T> handler, EventPhase phase = EventPhase.On);
+    bool TryListenEvent(string eventName, object? key, Functor handler, EventPhase phase = EventPhase.On);
+    bool TryListenEvent<T>(string eventName, object? key, Functor<T> handler, EventPhase phase = EventPhase.On);
     void RemoveEvent(IEvent @event);
 
     #region Derived Functions
@@ -33,20 +33,20 @@ public interface IEventBus
     }
     IEvent<T> AddEvent<T>(string eventName) => AddEvent<T>(eventName, null!);
 
-    bool TryListenEvent(string eventName, Handler handler, EventPhase phase = EventPhase.On) => TryListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
-    void ListenEvent(string eventName, object? key, Handler handler, EventPhase phase = EventPhase.On)
+    bool TryListenEvent(string eventName, Functor handler, EventPhase phase = EventPhase.On) => TryListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
+    void ListenEvent(string eventName, object? key, Functor handler, EventPhase phase = EventPhase.On)
     {
         if (!TryListenEvent(eventName, key, handler, phase))
             throw new InvalidOperationException($"Event does not exist.");
     }
-    void ListenEvent(string eventName, Handler handler, EventPhase phase = EventPhase.On) => ListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
+    void ListenEvent(string eventName, Functor handler, EventPhase phase = EventPhase.On) => ListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
 
-    bool TryListenEvent<T>(string eventName, Handler<T> handler, EventPhase phase = EventPhase.On) => TryListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
-    void ListenEvent<T>(string eventName, object? key, Handler<T> handler, EventPhase phase = EventPhase.On)
+    bool TryListenEvent<T>(string eventName, Functor<T> handler, EventPhase phase = EventPhase.On) => TryListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
+    void ListenEvent<T>(string eventName, object? key, Functor<T> handler, EventPhase phase = EventPhase.On)
     {
         if (!TryListenEvent(eventName, key, handler, phase))
             throw new InvalidOperationException("Event does not exist or return type is not compatible.");
     }
-    void ListenEvent<T>(string eventName, Handler<T> handler, EventPhase phase = EventPhase.On) => ListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
+    void ListenEvent<T>(string eventName, Functor<T> handler, EventPhase phase = EventPhase.On) => ListenEvent(eventName, EventKey.SomeOneButNullPrefer, handler, phase);
     #endregion
 }

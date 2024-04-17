@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using EventBusNet8;
+﻿using EventBusNet8;
 using EventBusNet8.Abstractions;
 using EventBusNet8.Adapter;
 using EventBusNet8.Enums;
@@ -9,11 +8,11 @@ public class Listener1
 {
     public Listener1(IEventBus eventBus)
     {
-        eventBus.ListenEvent("Add", null, new Handler(ListenNormal));
-        eventBus.ListenEvent("Add", IEventBus.SomeOneButNullPrefer, new Handler(ListenStatic));
-        eventBus.ListenEvent("AddInter", IEventBus.All, new Handler(ListenInter));
-        eventBus.ListenEvent("Add", IEventBus.SomeOne, new Handler<int>(ListenTyped));
-        eventBus.ListenEvent("Add", null, new Handler<int>(ListenPhase), EventPhase.Pre);
+        eventBus.ListenEvent("Add", null, ListenNormal);
+        eventBus.ListenEvent("Add", EventKey.SomeOneButNullPrefer, ListenStatic);
+        eventBus.ListenEvent("AddInter", EventKey.All, ListenInter);
+        eventBus.ListenEvent("Add", EventKey.SomeOne, ListenTyped);
+        eventBus.ListenEvent("Add", null, ListenPhase, EventPhase.Pre);
     }
     public EventResult ListenNormal(IEventParam param)
     {
@@ -53,10 +52,10 @@ public class Listener2
 {
     public Listener2(IEventBus eventBus)
     {
-        eventBus.ListenEvent("Add", null, new Handler(ListenNormal));
-        eventBus.ListenEvent("Add", null, new Handler(ListenStatic));
-        eventBus.ListenEvent("AddInter", IEventBus.All, new Handler(ListenInter));
-        eventBus.ListenEvent("Mul", null, new Handler<int>(ListenTyped));
+        eventBus.ListenEvent("Add", ListenNormal);
+        eventBus.ListenEvent("Add", ListenStatic);
+        eventBus.ListenEvent("AddInter", EventKey.All, ListenInter);
+        eventBus.ListenEvent("Mul", ListenTyped);
     }
     public EventResult ListenNormal(IEventParam param)
     {
@@ -90,19 +89,19 @@ public class Provider(IEventBus eventBus)
 
     public void Invoke1()
     {
-        var result = _add.Invoke(new EventParam([1, 2]));
+        var result = _add.Invoke(1, 2);
         Console.WriteLine($"Result: {result.Return}");
 
         Dictionary<string, int> dic = [];
         dic["1"] = 100;
         dic["2"] = 200;
-        result = _mul.Invoke(new EventParam(dic));
+        result = _mul.Invoke(dic);
         Console.WriteLine($"Result: {result.Return}");
     }
 
     public void Invoke2()
     {
-        _addInter.Invoke(new EventParam([1, 2]));
+        _addInter.Invoke(1, 2);
     }
 }
 
@@ -110,7 +109,7 @@ public class AsyncListener
 {
     public AsyncListener(IEventBus eventBus)
     {
-        eventBus.ListenEvent<int>("Async", null, (Handler<int>.Functor)ListenAsync);
+        eventBus.ListenEvent<int>("Async", null, ListenAsync);
     }
     public EventResult<int> ListenAsync(IEventParam param)
     {
@@ -138,11 +137,11 @@ public class Test
         Console.WriteLine($"Current Thread:{Thread.CurrentThread.ManagedThreadId}");
         IEventBus bus = new EventBus();
         var provider = new Provider(bus);
-        var asyncProvider= new AsyncProvider(bus);
+        var asyncProvider = new AsyncProvider(bus);
         var listener1 = new Listener1(bus);
         var listener2 = new Listener2(bus);
         var asyncListener = new AsyncListener(bus);
-        var x=asyncProvider.InvokeAsync();
+        var x = asyncProvider.InvokeAsync();
         provider.Invoke1();
         provider.Invoke2();
         Console.WriteLine(await x);

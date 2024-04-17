@@ -6,7 +6,16 @@ namespace EventBusNet8;
 public class EventParam : IEventParam
 {
     public EventParam() => _values = [];
-    public EventParam(IEnumerable<object?> values) => _values = values.ToList();
+
+    public EventParam(IEnumerable? values)
+    {
+        _values = [];
+        if (values is null) return;
+        foreach (var value in values)
+        {
+            Push(value);
+        }
+    }
     public EventParam(IDictionary values)
     {
         _values = [];
@@ -20,16 +29,9 @@ public class EventParam : IEventParam
         }
     }
 
-    public static implicit operator EventParam(object?[] values) => new(values);
-    public static implicit operator EventParam(List<object?> values) => new(values);
-    public static implicit operator EventParam(Dictionary<string, object?> values) => new(values);
-
     public EventStatus Status { get; set; }
 
-    public T Get<T>(int index)
-    {
-        return (T)_values.ElementAt(index)!;
-    }
+    public T Get<T>(int index) => (T)_values[index]!;
 
     public bool TryGet<T>(int index, out T value)
     {
@@ -55,10 +57,7 @@ public class EventParam : IEventParam
         return true;
     }
 
-    public void Set(int index, object? value)
-    {
-        _values[index] = value;
-    }
+    public void Set(int index, object? value) => _values[index] = value;
 
     public bool TrySet(int index, object? value)
     {
@@ -70,22 +69,9 @@ public class EventParam : IEventParam
         return true;
     }
 
-    public void Set(string name, object? value)
-    {
-        if (_map.TryGetValue(name, out var index))
-        {
-            Set(index, value);
-        }
-        else
-        {
-            Add(name, value);
-        }
-    }
+    public void Set(string name, object? value) => Set(_map[name], value);
 
-    public bool TrySet(string name, object? value)
-    {
-        return _map.TryGetValue(name, out var index) && TrySet(index, value);
-    }
+    public bool TrySet(string name, object? value) => _map.TryGetValue(name, out var index) && TrySet(index, value);
 
     public T Get<T>(string name) => Get<T>(_map[name]);
 
@@ -98,10 +84,7 @@ public class EventParam : IEventParam
         value = default!;
         return false;
     }
-    public void Push(object? value)
-    {
-        _values.Add(value);
-    }
+    public void Push(object? value) => _values.Add(value);
 
     public void Add(string name, object? value)
     {
@@ -119,10 +102,7 @@ public class EventParam : IEventParam
         return true;
     }
 
-    public void SetName(int index, string name)
-    {
-        _map[name] = index;
-    }
+    public void SetName(int index, string name) => _map[name] = index;
 
     public bool TrySetName(int index, string name)
     {
@@ -131,10 +111,7 @@ public class EventParam : IEventParam
         return true;
     }
 
-    public bool Remove(string name)
-    {
-        return _map.Remove(name, out var index) && Remove(index);
-    }
+    public bool Remove(string name) => _map.Remove(name, out var index) && Remove(index);
 
     private readonly List<object?> _values;
     private readonly Dictionary<string, int> _map = [];
