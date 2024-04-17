@@ -7,7 +7,6 @@ public class EventParam : IEventParam
 {
     public EventParam() => _values = [];
     public EventParam(IEnumerable<object?> values) => _values = values.ToList();
-
     public EventParam(IDictionary values)
     {
         _values = [];
@@ -20,6 +19,10 @@ public class EventParam : IEventParam
             Add(key, entry.Value);
         }
     }
+
+    public static implicit operator EventParam(object?[] values) => new(values);
+    public static implicit operator EventParam(List<object?> values) => new(values);
+    public static implicit operator EventParam(Dictionary<string, object?> values) => new(values);
 
     public EventStatus Status { get; set; }
 

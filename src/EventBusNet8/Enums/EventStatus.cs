@@ -1,7 +1,9 @@
 ﻿namespace EventBusNet8.Enums;
+
+[Flags]
 public enum EventStatus
 {
-    Continued = 0,
-    Interrupted,
-    ParamChanged
+    Continued = 1,
+    ParamChanged = 2,
+    Interrupted = 4
 }

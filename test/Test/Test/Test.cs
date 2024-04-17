@@ -1,6 +1,9 @@
-﻿using EventBusNet8;
+﻿using System.Runtime.InteropServices;
+using EventBusNet8;
 using EventBusNet8.Abstractions;
+using EventBusNet8.Adapter;
 using EventBusNet8.Enums;
+using EventBusNet8.Fundamental;
 
 public class Listener1
 {
@@ -12,36 +15,36 @@ public class Listener1
         eventBus.ListenEvent("Add", IEventBus.SomeOne, new Handler<int>(ListenTyped));
         eventBus.ListenEvent("Add", null, new Handler<int>(ListenPhase), EventPhase.Pre);
     }
-    public IResult ListenNormal(IEventParam param)
+    public EventResult ListenNormal(IEventParam param)
     {
         Console.WriteLine($"ListenNormal {param.Get<int>(0)}+{param.Get<int>(1)}={param.Get<int>(0) + param.Get<int>(1)}");
-        return new Result(EventStatus.Continued);
+        return EventStatus.Continued;
     }
 
-    public static IResult ListenStatic(IEventParam param)
+    public static EventResult ListenStatic(IEventParam param)
     {
         Console.WriteLine($"ListenStatic {param.Get<int>(0)}+{param.Get<int>(1)}={param.Get<int>(0) + param.Get<int>(1)}");
-        return new Result(EventStatus.Continued);
+        return EventStatus.Continued;
     }
 
-    public IResult ListenInter(IEventParam param)
+    public EventResult ListenInter(IEventParam param)
     {
         Console.WriteLine($"ListenInter {param.Get<int>(0)}+{param.Get<int>(1)}={param.Get<int>(0) + param.Get<int>(1)}");
-        return new Result(EventStatus.Interrupted);
+        return EventStatus.Interrupted;
     }
 
-    public IResult<int> ListenTyped(IEventParam param)
+    public EventResult<int> ListenTyped(IEventParam param)
     {
         Console.WriteLine($"ListenTyped {param.Get<int>(0)}+{param.Get<int>(1)}");
-        return new Result<int>(param.Get<int>(0) + param.Get<int>(1), EventStatus.Interrupted);
+        return param.Get<int>(0) + param.Get<int>(1);
     }
 
-    public IResult<int> ListenPhase(IEventParam param)
+    public EventResult<int> ListenPhase(IEventParam param)
     {
         Console.WriteLine($"ListenPhase {param.Get<int>(0)}+{param.Get<int>(1)}");
         param.Set(0, 101);
         param.Set(1, 202);
-        return new Result<int>(param.Get<int>(0) + param.Get<int>(1), EventStatus.Continued);
+        return EventStatus.Continued;
     }
 
 }
@@ -55,28 +58,28 @@ public class Listener2
         eventBus.ListenEvent("AddInter", IEventBus.All, new Handler(ListenInter));
         eventBus.ListenEvent("Mul", null, new Handler<int>(ListenTyped));
     }
-    public IResult ListenNormal(IEventParam param)
+    public EventResult ListenNormal(IEventParam param)
     {
         Console.WriteLine($"Listen2Normal {param.Get<int>(0)}+{param.Get<int>(1)}={param.Get<int>(0) + param.Get<int>(1)}");
-        return new Result(EventStatus.Continued);
+        return EventStatus.Continued;
     }
 
-    public static IResult ListenStatic(IEventParam param)
+    public static EventResult ListenStatic(IEventParam param)
     {
         Console.WriteLine($"Listen2Static {param.Get<int>(0)}+{param.Get<int>(1)}={param.Get<int>(0) + param.Get<int>(1)}");
-        return new Result(EventStatus.Continued);
+        return EventStatus.Continued;
     }
 
-    public IResult ListenInter(IEventParam param)
+    public EventResult ListenInter(IEventParam param)
     {
         Console.WriteLine($"I Can not ...");
-        return new Result(EventStatus.Continued);
+        return EventStatus.Continued;
     }
 
-    public IResult<int> ListenTyped(IEventParam param)
+    public EventResult<int> ListenTyped(IEventParam param)
     {
         Console.WriteLine($"Listen2Typed {param.Get<int>("1")}*{param.Get<int>("2")}");
-        return new Result<int>(param.Get<int>("1") * param.Get<int>("2"), EventStatus.Continued);
+        return param.Get<int>("1") * param.Get<int>("2");
     }
 }
 
@@ -103,16 +106,46 @@ public class Provider(IEventBus eventBus)
     }
 }
 
+public class AsyncListener
+{
+    public AsyncListener(IEventBus eventBus)
+    {
+        eventBus.ListenEvent<int>("Async", null, (Handler<int>.Functor)ListenAsync);
+    }
+    public EventResult<int> ListenAsync(IEventParam param)
+    {
+        Console.WriteLine($"Current Thread:{Thread.CurrentThread.ManagedThreadId}");
+        Thread.Sleep(1000);
+        Console.WriteLine("ListenAsync Thread.");
+        return 99;
+    }
+}
+
+public class AsyncProvider(IEventBus eventBus)
+{
+    private readonly IEvent<int> _async = eventBus.AddEvent<int>("Async");
+
+    public Task<EventResult<int>> InvokeAsync()
+    {
+        return _async.InvokeAsync(new EventParam());
+    }
+}
+
 public class Test
 {
-    static void Main()
+    static async Task Main()
     {
+        Console.WriteLine($"Current Thread:{Thread.CurrentThread.ManagedThreadId}");
         IEventBus bus = new EventBus();
         var provider = new Provider(bus);
+        var asyncProvider= new AsyncProvider(bus);
         var listener1 = new Listener1(bus);
         var listener2 = new Listener2(bus);
+        var asyncListener = new AsyncListener(bus);
+        var x=asyncProvider.InvokeAsync();
         provider.Invoke1();
         provider.Invoke2();
+        Console.WriteLine(await x);
     }
 }
 

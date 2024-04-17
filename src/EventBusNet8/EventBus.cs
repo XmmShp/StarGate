@@ -1,4 +1,5 @@
 ﻿using EventBusNet8.Abstractions;
+using EventBusNet8.Adapter;
 using EventBusNet8.Enums;
 
 namespace EventBusNet8;
@@ -9,11 +10,11 @@ public class EventBus : IEventBus
     private readonly object _nullKey = new NullKey();
 
     public void RemoveEvent(IEvent @event) => RemoveEvent(@event.Name, @event.Key, false);
-    public void RemoveEvent(string eventName) => RemoveEvent(eventName, IEventBus.All, true);
+    public void RemoveEvent(string eventName) => RemoveEvent(eventName, EventKey.All, true);
 
     public bool TryAddEvent(string eventName, object? key, out IEvent value)
     {
-        if (key == IEventBus.All || key == IEventBus.SomeOne || key == IEventBus.SomeOneButNullPrefer)
+        if (key == EventKey.All || key == EventKey.SomeOne || key == EventKey.SomeOneButNullPrefer)
         {
             value = default!;
             return false;
@@ -32,7 +33,7 @@ public class EventBus : IEventBus
 
     public bool TryAddEvent<T>(string eventName, object? key, out IEvent<T> value)
     {
-        if (key == IEventBus.All || key == IEventBus.SomeOne || key == IEventBus.SomeOneButNullPrefer)
+        if (key == EventKey.All || key == EventKey.SomeOne || key == EventKey.SomeOneButNullPrefer)
         {
             value = default!;
             return false;
@@ -49,11 +50,11 @@ public class EventBus : IEventBus
         return true;
     }
 
-    public bool TryListenEvent(string eventName, object? key, IHandler handler, EventPhase phase)
+    public bool TryListenEvent(string eventName, object? key, Handler handler, EventPhase phase)
     {
         if (!_events.TryGetValue(eventName, out var events)) return false;//no event
 
-        if (key == IEventBus.SomeOneButNullPrefer)
+        if (key == EventKey.SomeOneButNullPrefer)
         {
             // ReSharper disable once InvertIf
             if (events.TryGetValue(_nullKey, out var nullEvent))//try to get event with null-key
@@ -68,7 +69,7 @@ public class EventBus : IEventBus
             return ListenSomeOne();
         }
 
-        if (key == IEventBus.All)
+        if (key == EventKey.All)
         {
             var flag = false;
             foreach (var @event in events.Values)
@@ -83,7 +84,7 @@ public class EventBus : IEventBus
             return flag;
         }
 
-        if (key == IEventBus.SomeOne)
+        if (key == EventKey.SomeOne)
         {
             return ListenSomeOne();
         }
@@ -115,11 +116,11 @@ public class EventBus : IEventBus
         }
     }
 
-    public bool TryListenEvent<T>(string eventName, object? key, IHandler<T> handler, EventPhase phase)
+    public bool TryListenEvent<T>(string eventName, object? key, Handler<T> handler, EventPhase phase)
     {
         if (!_events.TryGetValue(eventName, out var events)) return false;//no event
 
-        if (key == IEventBus.SomeOneButNullPrefer)
+        if (key == EventKey.SomeOneButNullPrefer)
         {
             // ReSharper disable once InvertIf
             if (events.TryGetValue(_nullKey, out var nullEvent)) //try to get event with null-key
@@ -134,7 +135,7 @@ public class EventBus : IEventBus
             return ListenSomeOne();
         }
 
-        if (key == IEventBus.All)
+        if (key == EventKey.All)
         {
             var flag = false;
             foreach (var @event in events.Values)
@@ -149,7 +150,7 @@ public class EventBus : IEventBus
             return flag;
         }
 
-        if (key == IEventBus.SomeOne)
+        if (key == EventKey.SomeOne)
         {
             return ListenSomeOne();
         }
@@ -188,7 +189,7 @@ public class EventBus : IEventBus
     public void RemoveEvent(string eventName, object? key, bool doUnload)
     {
         if (!_events.TryGetValue(eventName, out var events)) return;
-        if (key == IEventBus.All)
+        if (key == EventKey.All)
         {
             if (doUnload)
             {
@@ -201,11 +202,11 @@ public class EventBus : IEventBus
             _events.Remove(eventName);
             return;
         }
-        if (key == IEventBus.SomeOne)
+        if (key == EventKey.SomeOne)
         {
             RemoveSomeOne();
         }
-        if (key == IEventBus.SomeOneButNullPrefer)
+        if (key == EventKey.SomeOneButNullPrefer)
         {
             if (events.TryGetValue(_nullKey, out var nullEvent))
             {

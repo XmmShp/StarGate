@@ -3,7 +3,7 @@
 public enum EventPhase
 {
     Pre,
-    Peri,
+    On,
     Post,
     Unload
 }
