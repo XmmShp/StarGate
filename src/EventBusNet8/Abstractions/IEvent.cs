@@ -10,11 +10,14 @@ namespace EventBusNet8.Abstractions;
 public interface IEvent
 {
     EventResult Invoke(EventParam param);
-    EventResult Invoke(IEnumerable values) => Invoke(new EventParam(values));
+    EventResult Invoke(IEnumerable param) => Invoke(new EventParam(param));
     EventResult Invoke(IDictionary param) => Invoke(new EventParam(param));
-    EventResult Invoke(params object?[]? objects) => Invoke(new EventParam(objects));
+    EventResult Invoke(params object?[] objects) => Invoke(new EventParam(objects));
     void Unload(EventParam param);
     Task<EventResult> InvokeAsync(EventParam param);
+    Task<EventResult> InvokeAsync(IEnumerable param) => InvokeAsync(new EventParam(param));
+    Task<EventResult> InvokeAsync(IDictionary param) => InvokeAsync(new EventParam(param));
+    Task<EventResult> InvokeAsync(params object?[] objects) => InvokeAsync(new EventParam(objects));
 
     /// <summary>
     /// Registers an event listener to receive notifications when the event is triggered.
@@ -38,10 +41,13 @@ public interface IEvent<T> : IEvent
     /// <param name="param">The event parameters to be passed to the handler.</param>
     /// <returns>The typed result of the event invocation, represented as a <see cref="EventResult{T}"/> object.</returns>
     new EventResult<T> Invoke(EventParam param);
-    new EventResult<T> Invoke(IEnumerable values) => Invoke(new EventParam(values));
+    new EventResult<T> Invoke(IEnumerable param) => Invoke(new EventParam(param));
     new EventResult<T> Invoke(IDictionary param) => Invoke(new EventParam(param));
-    new EventResult<T> Invoke(params object?[]? objects) => Invoke(new EventParam(objects));
+    new EventResult<T> Invoke(params object?[] objects) => Invoke(new EventParam(objects));
     new Task<EventResult<T>> InvokeAsync(EventParam param);
+    new Task<EventResult<T>> InvokeAsync(IEnumerable param) => InvokeAsync(new EventParam(param));
+    new Task<EventResult<T>> InvokeAsync(IDictionary param) => InvokeAsync(new EventParam(param));
+    new Task<EventResult<T>> InvokeAsync(params object?[] objects) => InvokeAsync(new EventParam(objects));
 
     /// <summary>
     /// Registers a typed event listener to receive notifications when the event is triggered.

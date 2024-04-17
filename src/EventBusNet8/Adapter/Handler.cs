@@ -20,7 +20,7 @@ internal class Handler
     }
     public EventResult Invoke(IEventParam param) => Target is null ? (EventResult)Method.Invoke(null, [param])!
         : IsAlive ? (EventResult)Method.Invoke(Target.Target, [param])!
-        : EventStatus.Continued;
+        : EventStatus.Continue;
 
     public bool IsAlive => Target?.IsAlive ?? true;
     protected MethodInfo Method;
@@ -36,5 +36,5 @@ internal class Handler<T> : Handler
     }
     public new EventResult<T> Invoke(IEventParam param) => Target is null ? (EventResult<T>)Method.Invoke(null, [param])!
         : IsAlive ? (EventResult<T>)Method.Invoke(Target.Target, [param])!
-        : EventStatus.Continued;
+        : EventStatus.Continue;
 }
