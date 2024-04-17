@@ -1,32 +1,34 @@
-﻿using Shoming.EventBus.Abstractions;
-using Shoming.EventBus.Abstractions.Enums;
+﻿using System.Collections;
+using EventBusNet8.Abstractions;
+using EventBusNet8.Enums;
 
-namespace Shoming.EventBus;
+namespace EventBusNet8;
 public class EventParam : IEventParam
 {
-    public EventParam()
+    public EventParam() => _values = [];
+    public EventParam(IEnumerable<object?> values) => _values = values.ToList();
+
+    public EventParam(IDictionary values)
     {
         _values = [];
-    }
-    public EventParam(IEnumerable<object?> values)
-    {
-        _values = new List<object?>(values);
-    }
-
-    public EventParam(IDictionary<string, object?> values)
-    {
-        _values = new List<object?>(values.Values);
-        _map = values.Keys.Select((key, index) => (key, index)).ToDictionary(pair => pair.key, pair => pair.index);
+        foreach (DictionaryEntry entry in values)
+        {
+            if (entry.Key is not string key)
+            {
+                throw new ArgumentException("Key must be a string", nameof(values));
+            }
+            Add(key, entry.Value);
+        }
     }
 
     public EventStatus Status { get; set; }
 
-    public T Get<T>(int index) where T : class
+    public T Get<T>(int index)
     {
         return (T)_values.ElementAt(index)!;
     }
 
-    public bool TryGet<T>(int index, out T value) where T : class
+    public bool TryGet<T>(int index, out T value)
     {
         try
         {
@@ -50,9 +52,41 @@ public class EventParam : IEventParam
         return true;
     }
 
-    public T Get<T>(string name) where T : class => Get<T>(_map[name]);
+    public void Set(int index, object? value)
+    {
+        _values[index] = value;
+    }
 
-    public bool TryGet<T>(string name, out T value) where T : class
+    public bool TrySet(int index, object? value)
+    {
+        if (index < 0 || index >= _values.Count)
+        {
+            return false;
+        }
+        Set(index, value);
+        return true;
+    }
+
+    public void Set(string name, object? value)
+    {
+        if (_map.TryGetValue(name, out var index))
+        {
+            Set(index, value);
+        }
+        else
+        {
+            Add(name, value);
+        }
+    }
+
+    public bool TrySet(string name, object? value)
+    {
+        return _map.TryGetValue(name, out var index) && TrySet(index, value);
+    }
+
+    public T Get<T>(string name) => Get<T>(_map[name]);
+
+    public bool TryGet<T>(string name, out T value)
     {
         if (_map.TryGetValue(name, out var index))
         {
@@ -61,16 +95,17 @@ public class EventParam : IEventParam
         value = default!;
         return false;
     }
-    public void Push(object value)
+    public void Push(object? value)
     {
         _values.Add(value);
     }
 
-    public void Add(string name, object value)
+    public void Add(string name, object? value)
     {
         _map[name] = _values.Count;
         Push(value);
     }
+
     public bool TryAdd(string name, object value)
     {
         if (_map.ContainsKey(name))

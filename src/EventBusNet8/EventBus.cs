@@ -1,14 +1,15 @@
-﻿using System;
-using System.Net;
-using Shoming.EventBus.Abstractions;
-using Shoming.EventBus.Abstractions.Enums;
+﻿using EventBusNet8.Abstractions;
+using EventBusNet8.Enums;
 
-namespace Shoming.EventBus;
+namespace EventBusNet8;
 
 internal class NullKey;
 public class EventBus : IEventBus
 {
     private readonly object _nullKey = new NullKey();
+
+    public void RemoveEvent(IEvent @event) => RemoveEvent(@event.Name, @event.Key, false);
+    public void RemoveEvent(string eventName) => RemoveEvent(eventName, IEventBus.All, true);
 
     public bool TryAddEvent(string eventName, object? key, out IEvent value)
     {

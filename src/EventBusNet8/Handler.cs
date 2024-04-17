@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Shoming.EventBus.Abstractions;
-using Shoming.EventBus.Abstractions.Enums;
+using EventBusNet8.Abstractions;
+using EventBusNet8.Enums;
 
-namespace Shoming.EventBus;
+namespace EventBusNet8;
 public class Handler : IHandler
 {
     public Handler()

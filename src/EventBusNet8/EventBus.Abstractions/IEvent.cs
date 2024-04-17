@@ -1,6 +1,6 @@
-﻿using Shoming.EventBus.Abstractions.Enums;
+﻿using EventBusNet8.Enums;
 
-namespace Shoming.EventBus.Abstractions;
+namespace EventBusNet8.Abstractions;
 /// <summary>
 /// Represents an interface for an event, defining methods for invoking an event handler and registering listeners.
 /// </summary>

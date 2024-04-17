@@ -1,7 +1,7 @@
-﻿using Shoming.EventBus.Abstractions;
-using Shoming.EventBus.Abstractions.Enums;
+﻿using EventBusNet8.Abstractions;
+using EventBusNet8.Enums;
 
-namespace Shoming.EventBus;
+namespace EventBusNet8;
 
 internal class Event(string name, object key, IEventBus eventBus) : IEvent
 {
@@ -11,7 +11,7 @@ internal class Event(string name, object key, IEventBus eventBus) : IEvent
         if (result.Status != EventStatus.Interrupted)
             result = InvokePhase(param, EventPhase.Peri);
         if (result.Status != EventStatus.Interrupted)
-            result = InvokePhase(param, EventPhase.Post);
+            InvokePhase(param, EventPhase.Post);
         return result;
     }
 
@@ -27,10 +27,12 @@ internal class Event(string name, object key, IEventBus eventBus) : IEvent
     protected IResult InvokePhase(IEventParam param, EventPhase phase)
     {
         IResult res = new Result(EventStatus.Continued);
-        foreach (var handler in _handlers[phase].TakeWhile(_ => param.Status != EventStatus.Interrupted))
+        foreach (var handler in _handlers[phase].TakeWhile(_ => res.Status != EventStatus.Interrupted))
         {
+            param.Status = res.Status;
             res = handler.Invoke(param);
         }
+        param.Status = res.Status;
         return res;
     }
 
@@ -59,17 +61,19 @@ internal class Event<T>(string name, object key, IEventBus eventBus) : Event(nam
         if (result.Status != EventStatus.Interrupted)
             result = InvokePhase(param, EventPhase.Peri);
         if (result.Status != EventStatus.Interrupted)
-            result = InvokePhase(param, EventPhase.Post);
+            InvokePhase(param, EventPhase.Post);
         return result;
     }
 
     protected new IResult<T> InvokePhase(IEventParam param, EventPhase phase)
     {
         IResult<T> res = new Result<T>(default, base.InvokePhase(param, phase).Status);
-        foreach (var handler in _typedHandlers[phase].TakeWhile(_ => param.Status != EventStatus.Interrupted))
+        foreach (var handler in _typedHandlers[phase].TakeWhile(_ => res.Status != EventStatus.Interrupted))
         {
+            param.Status = res.Status;
             res = handler.Invoke(param);
         }
+        param.Status = res.Status;
         return res;
     }
 

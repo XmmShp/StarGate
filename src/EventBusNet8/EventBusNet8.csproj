@@ -7,23 +7,15 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Shoming</Authors>
 		<Copyright>Copyright (c) 2024 XmmShp</Copyright>
-		<PackageId>Shoming.EventBus</PackageId>
+		<PackageId>EventBusNet8</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/XmmShp/EventBus.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/XmmShp/EventBusNet8.git</RepositoryUrl>
 		<PackageTags>Event;EventBus;PluginSystem;</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.2.0</Version>
-		<PackageProjectUrl>https://www.nuget.org/packages/Shoming.EventBus</PackageProjectUrl>
+		<Version>1.3.3</Version>
+		<PackageProjectUrl>https://www.nuget.org/packages/EventBusNet8</PackageProjectUrl>
 		<Title>EventBus</Title>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\EventBus.Abstractions\EventBus.Abstractions.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Fundamental\" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\README.md">
