@@ -9,8 +9,9 @@ public class EventBus : IEventBus
 {
     private readonly object _nullKey = new NullKey();
 
-    public void RemoveEvent(IEvent @event) => RemoveEvent(@event.Name, @event.Key, false);
-    public void RemoveEvent(string eventName) => RemoveEvent(eventName, EventKey.All, true);
+    public void RemoveEvent(IEvent @event) => RemoveEvent(@event.Name, @event.Key, [], false);
+    public void RemoveEvent(string eventName, EventParam param) => RemoveEvent(eventName, EventKey.All, param, true);
+    public void RemoveEvent(string eventName) => RemoveEvent(eventName, []);
 
     public bool TryAddEvent(string eventName, object? key, out IEvent value)
     {
@@ -186,7 +187,7 @@ public class EventBus : IEventBus
         }
     }
 
-    public void RemoveEvent(string eventName, object? key, bool doUnload)
+    public void RemoveEvent(string eventName, object? key, EventParam param, bool doUnload)
     {
         if (!_events.TryGetValue(eventName, out var events)) return;
         if (key == EventKey.All)
@@ -196,7 +197,7 @@ public class EventBus : IEventBus
                 foreach (var eventKv in events)
                 {
                     if (eventKv.Value.TryGetTarget(out var eventTarget))
-                        eventTarget.Unload(new EventParam());
+                        eventTarget.Unload(param);
                 }
             }
             _events.Remove(eventName);
@@ -214,7 +215,7 @@ public class EventBus : IEventBus
                 {
                     if (doUnload)
                     {
-                        nullTarget.Unload(new EventParam());
+                        nullTarget.Unload(param);
                     }
                     events.Remove(_nullKey);
                 }
@@ -226,7 +227,7 @@ public class EventBus : IEventBus
         if (!events.TryGetValue(key, out var @ref)) return;
         if (@ref.TryGetTarget(out var target))
         {
-            target.Unload(new EventParam());
+            target.Unload(param);
         }
         events.Remove(key);
         return;
@@ -243,7 +244,7 @@ public class EventBus : IEventBus
                 }
                 if (doUnload)
                 {
-                    eventTarget.Unload(new EventParam());
+                    eventTarget.Unload(param);
                 }
                 events.Remove(events.First().Key);
                 return;

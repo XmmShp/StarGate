@@ -2,7 +2,6 @@
 using EventBusNet8.Adapter;
 using EventBusNet8.Enums;
 using EventBusNet8.Fundamental;
-using System.Numerics;
 
 namespace EventBusNet8;
 

@@ -8,11 +8,7 @@ public delegate EventResult Functor(IEventParam eventParam);
 public delegate EventResult<T> Functor<T>(IEventParam eventParam);
 internal class Handler
 {
-    public Handler()
-    {
-        Method = null!;
-        Target = null!;
-    }
+    protected Handler() { }
     public Handler(Functor functor)
     {
         Method = functor.Method;
@@ -23,7 +19,7 @@ internal class Handler
         : EventStatus.Continue;
 
     public bool IsAlive => Target?.IsAlive ?? true;
-    protected MethodInfo Method;
+    protected MethodInfo Method = null!;
     protected WeakReference? Target;
 }
 

@@ -4,56 +4,38 @@ using EventBusNet8.Enums;
 using EventBusNet8.Fundamental;
 
 namespace EventBusNet8.Abstractions;
-/// <summary>
-/// Represents an interface for an event, defining methods for invoking an event handler and registering listeners.
-/// </summary>
 public interface IEvent
 {
-    EventResult Invoke(EventParam param);
-    EventResult Invoke(IEnumerable param) => Invoke(new EventParam(param));
-    EventResult Invoke(IDictionary param) => Invoke(new EventParam(param));
-    EventResult Invoke(params object?[] objects) => Invoke(new EventParam(objects));
-    void Unload(EventParam param);
-    Task<EventResult> InvokeAsync(EventParam param);
-    Task<EventResult> InvokeAsync(IEnumerable param) => InvokeAsync(new EventParam(param));
-    Task<EventResult> InvokeAsync(IDictionary param) => InvokeAsync(new EventParam(param));
-    Task<EventResult> InvokeAsync(params object?[] objects) => InvokeAsync(new EventParam(objects));
-
-    /// <summary>
-    /// Registers an event listener to receive notifications when the event is triggered.
-    /// </summary>
-    /// <param name="handler">The event listener instance that will be notified when the event occurs.</param>
-    /// <param name="phase">The phase of the event to listen for, pre,On or post.</param>
-    void ListenEvent(Functor handler, EventPhase phase);
     string Name { get; }
     object Key { get; }
+    EventResult Invoke(EventParam param);
+    Task<EventResult> InvokeAsync(EventParam param);
+    void ListenEvent(Functor handler, EventPhase phase);
+    void Unload(EventParam param);
+
+    #region Derived Functions
+    EventResult Invoke(IEnumerable param) => Invoke(new EventParam(param));
+    EventResult Invoke(IDictionary param) => Invoke(new EventParam(param));
+    EventResult Invoke(params object?[] param) => Invoke(new EventParam(param));
+    Task<EventResult> InvokeAsync(IEnumerable param) => InvokeAsync(new EventParam(param));
+    Task<EventResult> InvokeAsync(IDictionary param) => InvokeAsync(new EventParam(param));
+    Task<EventResult> InvokeAsync(params object?[] param) => InvokeAsync(new EventParam(param));
+    #endregion
 }
 
-/// <summary>
-/// Provides a generic version of the <see cref="IEvent"/> interface, allowing for typed event results.
-/// </summary>
-/// <typeparam name="T">The type of the event result.</typeparam>
 public interface IEvent<T> : IEvent
 {
-    /// <summary>
-    /// Invokes the event with the provided event parameters, passing them to the subscribed handler and returning a typed result.
-    /// </summary>
-    /// <param name="param">The event parameters to be passed to the handler.</param>
-    /// <returns>The typed result of the event invocation, represented as a <see cref="EventResult{T}"/> object.</returns>
     new EventResult<T> Invoke(EventParam param);
+    new Task<EventResult<T>> InvokeAsync(EventParam param);
+    void ListenEvent(Functor<T> handler, EventPhase phase);
+
+    #region Derived Functions
     new EventResult<T> Invoke(IEnumerable param) => Invoke(new EventParam(param));
     new EventResult<T> Invoke(IDictionary param) => Invoke(new EventParam(param));
-    new EventResult<T> Invoke(params object?[] objects) => Invoke(new EventParam(objects));
-    new Task<EventResult<T>> InvokeAsync(EventParam param);
+    new EventResult<T> Invoke(params object?[] param) => Invoke(new EventParam(param));
     new Task<EventResult<T>> InvokeAsync(IEnumerable param) => InvokeAsync(new EventParam(param));
     new Task<EventResult<T>> InvokeAsync(IDictionary param) => InvokeAsync(new EventParam(param));
-    new Task<EventResult<T>> InvokeAsync(params object?[] objects) => InvokeAsync(new EventParam(objects));
-
-    /// <summary>
-    /// Registers a typed event listener to receive notifications when the event is triggered.
-    /// </summary>
-    /// <param name="handler">The typed event listener instance that will be notified when the event occurs.</param>
-    /// <param name="phase">The phase of the event to listen for, pre,On or post.</param>
-    void ListenEvent(Functor<T> handler, EventPhase phase);
+    new Task<EventResult<T>> InvokeAsync(params object?[] param) => InvokeAsync(new EventParam(param));
+    #endregion
 
 }

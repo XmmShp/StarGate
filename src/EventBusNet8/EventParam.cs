@@ -3,9 +3,12 @@ using EventBusNet8.Abstractions;
 using EventBusNet8.Enums;
 
 namespace EventBusNet8;
+
 public class EventParam : IEventParam
 {
     public EventParam() => _values = [];
+
+    public IEnumerator GetEnumerator() => _values.GetEnumerator();
 
     public EventParam(IEnumerable? values)
     {

@@ -5,7 +5,7 @@ namespace EventBusNet8.Abstractions;
 /// <summary>
 /// Defines an interface for event parameters, providing management functionality for event arguments.
 /// </summary>
-public interface IEventParam
+public interface IEventParam : IEnumerable
 {
     /// <summary>
     /// The status of the event.
