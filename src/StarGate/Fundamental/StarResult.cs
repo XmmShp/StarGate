@@ -2,18 +2,17 @@
 
 namespace StarGate.Fundamental
 {
-    public class StarResult
+    public class StarResult<T>
     {
-        public StarResult(StarStatus status) => Status = status;
-        public StarStatus Status { get; }
-        public static implicit operator StarResult(StarStatus status) => new(status);
-        public static implicit operator StarStatus(StarResult result) => result.Status;
-    }
-
-    public class StarResult<T> : StarResult
-    {
-        public StarResult(T? @return, StarStatus status) : base(status) => Return = @return;
+        public StarStatus Status { get; set; }
         public T? Return { get; }
+
+        public StarResult(T? @return, StarStatus status)
+        {
+            Return = @return;
+            Status = status;
+        }
+
         public static implicit operator StarResult<T>((T? @return, StarStatus status) tuple) => new(tuple.@return, tuple.status);
         public static implicit operator StarResult<T>((StarStatus status, T? @return) tuple) => new(tuple.@return, tuple.status);
         public static implicit operator StarResult<T>(T? @return) => new(@return, StarStatus.Solve);

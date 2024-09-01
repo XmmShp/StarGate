@@ -4,74 +4,41 @@ using StarGate.Enums;
 using StarGate.Fundamental;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace StarGate
 {
-    internal class Star : IStar
+    internal class Star<T> : IStar<T>
     {
-        public Star(string name, object key, IStarGate starGate)
+        internal Star(string name, object key, IStarGate starGate)
         {
             Name = name;
             Key = key;
-            StarGate = starGate;
+            _starGate = starGate;
         }
-        public StarResult Invoke(IStarParam param)
+        private StarResult<T> InvokePhase(StarPhase phase, IStarParam param)
         {
-            InvokePhase(StarPhase.Pre, param);
-            if (!param.Status.IsInterrupt())
-                param.Status |= InvokePhase(StarPhase.On, param);
-            if (!param.Status.IsInterrupt())
-                InvokePhase(StarPhase.Post, param);
-            return param.Status;
-        }
-
-        public void Unload(IStarParam param)
-        {
-            foreach (var handler in Handlers[StarPhase.Unload])
-            {
-                handler.Invoke(param);
-            }
-            StarGate.RemoveStar(this);
-        }
-
-        protected StarResult InvokePhase(StarPhase phase, IStarParam param)
-        {
-            foreach (var handler in Handlers[phase].TakeWhile(_ => !param.Status.IsInterrupt()))
+            foreach (var handler in _handlers[phase].TakeWhile(_ => !param.Status.IsInterrupt()))
             {
                 param.Status |= handler.Invoke(param).Status;
             }
             return param.Status;
         }
-
-        public void RegisterHandler(Functor handler, StarPhase phase) => Handlers[phase].Add(new StarHandler(handler));
-
-        protected readonly Dictionary<StarPhase, List<StarHandler>> Handlers = new()
+        public void Unload(IStarParam param)
         {
-            { StarPhase.Pre ,new List<StarHandler>()},
-            { StarPhase.On ,new List<StarHandler>()},
-            { StarPhase.Post ,new List<StarHandler>()},
-            { StarPhase.Unload ,new List<StarHandler>()}
-        };
-
-        public async Task<StarResult> InvokeAsync(IStarParam param) => await Task.Run(() => Invoke(param));
-
-        public string Name { get; }
-        public object Key { get; }
-        public IStarGate StarGate { get; }
-
-    }
-    internal class Star<T> : Star, IStar<T>
-    {
-        public Star(string name, object key, IStarGate starGate) : base(name, key, starGate) { }
-        public new StarResult<T> Invoke(IStarParam param)
+            foreach (var handler in _handlers[StarPhase.Unload])
+            {
+                handler.Invoke(param);
+            }
+            _starGate.RemoveStar(this);
+        }
+        public StarResult<T> Invoke(IStarParam param)
         {
             T? result = default;
             InvokePhase(StarPhase.Pre, param);
             if (!param.Status.IsInterrupt())
             {
                 param.Status |= InvokePhase(StarPhase.On, param);
-                foreach (var handler in _typedHandlers[StarPhase.On].TakeWhile(_ => !param.Status.IsInterrupt()))
+                foreach (var handler in _handlers[StarPhase.On].TakeWhile(_ => !param.Status.IsInterrupt()))
                 {
                     var res = handler.Invoke(param);
                     param.Status |= res;
@@ -86,20 +53,19 @@ namespace StarGate
             return (result, param.Status);
         }
 
-        public new async Task<StarResult<T>> InvokeAsync(IStarParam param) => await Task.Run(() => Invoke(param));
-
         public void RegisterHandler(Functor<T> handler, StarPhase phase)
         {
-            if (phase is StarPhase.On)
-                _typedHandlers[phase].Add(new StarHandler<T>(handler));
-            else
-                Handlers[phase].Add(new StarHandler<T>(handler));
+            _handlers[phase].Add(new StarHandler<T>(handler));
         }
 
-        private readonly Dictionary<StarPhase, List<StarHandler<T>>> _typedHandlers = new()
+        private readonly Dictionary<StarPhase, List<StarHandler<T>>> _handlers = new()
         {
             { StarPhase.On ,new List<StarHandler<T>>()},
         };
+
+        public string Name { get; }
+        public object? Key { get; }
+        private readonly IStarGate _starGate;
     }
 }
 

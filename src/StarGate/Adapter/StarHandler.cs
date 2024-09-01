@@ -6,34 +6,26 @@ using System.Reflection;
 
 namespace StarGate.Adapter
 {
-    public delegate StarResult Functor(IStarParam starParam);
     public delegate StarResult<T> Functor<T>(IStarParam starParam);
-    internal class StarHandler
+
+    internal class StarHandler<T>
     {
-        protected StarHandler() { }
-        public StarHandler(Functor functor)
+        internal StarHandler(Functor<T> functor)
         {
-            Method = functor.Method;
-            Target = functor.Target is null ? null : new WeakReference(functor.Target);
+            _method = functor.Method;
+            _target = functor.Target is null ? null : new WeakReference(functor.Target);
         }
-        public StarResult Invoke(IStarParam param) => Target is null ? (StarResult)Method.Invoke(null, new object?[] { param })!
-            : IsAlive ? (StarResult)Method.Invoke(Target.Target, new object?[] { param })!
+        internal StarResult<T> Invoke(IStarParam param) => _target is null ? (StarResult<T>)_method.Invoke(null, new object?[] { param })!
+            : IsAlive ? (StarResult<T>)_method.Invoke(_target.Target, new object?[] { param })!
             : StarStatus.Continue;
 
-        public bool IsAlive => Target?.IsAlive ?? true;
-        protected MethodInfo Method = null!;
-        protected WeakReference? Target;
+        internal bool IsAlive => _target?.IsAlive ?? true;
+        private readonly MethodInfo _method;
+        private readonly WeakReference? _target;
     }
 
-    internal class StarHandler<T> : StarHandler
+    internal class NullStarHandler<T> : StarHandler<T>
     {
-        public StarHandler(Functor<T> functor)
-        {
-            Method = functor.Method;
-            Target = functor.Target is null ? null : new WeakReference(functor.Target);
-        }
-        public new StarResult<T> Invoke(IStarParam param) => Target is null ? (StarResult<T>)Method.Invoke(null, new object?[] { param })!
-            : IsAlive ? (StarResult<T>)Method.Invoke(Target.Target, new object?[] { param })!
-            : StarStatus.Continue;
+        internal NullStarHandler() : base(param => StarStatus.Continue) { }
     }
 }
