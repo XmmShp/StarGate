@@ -24,7 +24,6 @@ namespace StarGate.Abstractions
         IStar<T> AllocateStar<T>(string starName) => AllocateStar<T>(starName, null);
         bool TryAllocateStar(string starName, out IStar value) => TryAllocateStar(starName, null, out value);
         bool TryAllocateStar<T>(string starName, out IStar<T> value) => TryAllocateStar(starName, null, out value);
-
         bool TryAllocateStar<T>(string starName, object? key, out IStar<T> value)
         {
             try
