@@ -1,9 +1,9 @@
 ﻿using StarGate.Abstractions;
 using StarGate.Adapter;
 using StarGate.Enums;
-using StarGate.Fundamental;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StarGate
 {
@@ -15,42 +15,37 @@ namespace StarGate
             Key = key;
             _starGate = starGate;
         }
-        private StarResult<T> InvokePhase(StarPhase phase, IStarParam param)
+
+        private async Task<IList<T>> InvokePhase(StarPhase phase, IStarParam param)
         {
-            foreach (var handler in _handlers[phase].TakeWhile(_ => !param.Status.IsInterrupt()))
+            var results = new List<T>();
+            var tasks = _handlers[phase].Select(handler => Task.Run(() => handler.Invoke(param))).ToList();
+            while (tasks.Count > 0)
             {
-                param.Status |= handler.Invoke(param).Status;
+                var completedTask = await Task.WhenAny(tasks);
+                var index = tasks.IndexOf(completedTask);
+                var result = await completedTask;
+                results.Add(result);
+                tasks.RemoveAt(index);
             }
-            return param.Status;
+            return results;
         }
-        public void Unload(IStarParam param)
+
+        public async Task Unload(IStarParam param)
         {
-            foreach (var handler in _handlers[StarPhase.Unload])
-            {
-                handler.Invoke(param);
-            }
+            await InvokePhase(StarPhase.Unload, param);
             _starGate.RemoveStar(this);
         }
-        public StarResult<T> Invoke(IStarParam param)
+
+        public async Task<IList<T>> Invoke(IStarParam param)
         {
-            T? result = default;
-            InvokePhase(StarPhase.Pre, param);
-            if (!param.Status.IsInterrupt())
-            {
-                param.Status |= InvokePhase(StarPhase.On, param);
-                foreach (var handler in _handlers[StarPhase.On].TakeWhile(_ => !param.Status.IsInterrupt()))
-                {
-                    var res = handler.Invoke(param);
-                    param.Status |= res;
-                    if (param.Status.IsSolve())
-                    {
-                        result = res.Return;
-                    }
-                }
-            }
-            if (!param.Status.IsInterrupt())
-                InvokePhase(StarPhase.Post, param);
-            return (result, param.Status);
+            var results = new List<T>();
+            results.AddRange(await InvokePhase(StarPhase.Pre, param));
+            if (!param.Status.IsInterrupted())
+                results.AddRange(await InvokePhase(StarPhase.On, param));
+            if (!param.Status.IsInterrupted())
+                results.AddRange(await InvokePhase(StarPhase.Post, param));
+            return results;
         }
 
         public void RegisterHandler(Functor<T> handler, StarPhase phase)

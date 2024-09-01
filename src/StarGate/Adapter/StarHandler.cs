@@ -1,12 +1,11 @@
 ﻿using StarGate.Abstractions;
 using StarGate.Enums;
-using StarGate.Fundamental;
 using System;
 using System.Reflection;
 
 namespace StarGate.Adapter
 {
-    public delegate StarResult<T> Functor<T>(IStarParam starParam);
+    public delegate T Functor<out T>(IStarParam starParam);
 
     internal class StarHandler<T>
     {
@@ -15,9 +14,9 @@ namespace StarGate.Adapter
             _method = functor.Method;
             _target = functor.Target is null ? null : new WeakReference(functor.Target);
         }
-        internal StarResult<T> Invoke(IStarParam param) => _target is null ? (StarResult<T>)_method.Invoke(null, new object?[] { param })!
-            : IsAlive ? (StarResult<T>)_method.Invoke(_target.Target, new object?[] { param })!
-            : StarStatus.Continue;
+        internal T Invoke(IStarParam param) => _target is null ? (T)_method.Invoke(null, new object?[] { param })!
+            : IsAlive ? (T)_method.Invoke(_target.Target, new object?[] { param })!
+            : default!;
 
         internal bool IsAlive => _target?.IsAlive ?? true;
         private readonly MethodInfo _method;
@@ -26,6 +25,12 @@ namespace StarGate.Adapter
 
     internal class NullStarHandler<T> : StarHandler<T>
     {
-        internal NullStarHandler() : base(param => StarStatus.Continue) { }
+        internal NullStarHandler() : base(
+            param =>
+            {
+                param.Status |= StarStatus.Solved;
+                return default!;
+            })
+        { }
     }
 }
