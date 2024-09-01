@@ -10,10 +10,10 @@ namespace StarGate.Abstractions
     {
         string Name { get; }
         object Key { get; }
-        StarResult Invoke(StarParam param);
-        Task<StarResult> InvokeAsync(StarParam param);
+        StarResult Invoke(IStarParam param);
+        Task<StarResult> InvokeAsync(IStarParam param);
         void RegisterHandler(Functor handler, StarPhase phase);
-        void Unload(StarParam param);
+        void Unload(IStarParam param);
 
         #region Derived Functions
         StarResult Invoke(IEnumerable param) => Invoke(new StarParam(param));
@@ -27,8 +27,8 @@ namespace StarGate.Abstractions
 
     public interface IStar<T> : IStar
     {
-        new StarResult<T> Invoke(StarParam param);
-        new Task<StarResult<T>> InvokeAsync(StarParam param);
+        new StarResult<T> Invoke(IStarParam param);
+        new Task<StarResult<T>> InvokeAsync(IStarParam param);
         void RegisterHandler(Functor<T> handler, StarPhase phase);
 
         #region Derived Functions

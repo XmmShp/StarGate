@@ -16,6 +16,7 @@ namespace EventBusNet8
         private readonly object _nullKey = new NullKey();
 
         #region interfaces
+        public void RemoveStar(IStar star) => RemoveStar(star.Name, star.Key, new StarParam(), false);
 
         public IStar AllocateStar(string starName, object? key)
         {
@@ -219,8 +220,7 @@ namespace EventBusNet8
 
         public void RemoveStar(string starName, StarParam param) => RemoveStar(starName, StarKey.All, param, true);
         public void RemoveStar(string starName) => RemoveStar(starName, new StarParam());
-
-        public void RemoveStar(string starName, object? key, StarParam param, bool doUnload)
+        public void RemoveStar(string starName, object? key, IStarParam param, bool doUnload)
         {
             if (!_stars.TryGetValue(starName, out var events)) return;
             if (key == StarKey.All)

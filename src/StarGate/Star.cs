@@ -16,7 +16,7 @@ namespace StarGate
             Key = key;
             StarGate = starGate;
         }
-        public StarResult Invoke(StarParam param)
+        public StarResult Invoke(IStarParam param)
         {
             InvokePhase(StarPhase.Pre, param);
             if (!param.Status.IsInterrupt())
@@ -26,7 +26,7 @@ namespace StarGate
             return param.Status;
         }
 
-        public void Unload(StarParam param)
+        public void Unload(IStarParam param)
         {
             foreach (var handler in Handlers[StarPhase.Unload])
             {
@@ -35,7 +35,7 @@ namespace StarGate
             StarGate.RemoveStar(this);
         }
 
-        protected StarResult InvokePhase(StarPhase phase, StarParam param)
+        protected StarResult InvokePhase(StarPhase phase, IStarParam param)
         {
             foreach (var handler in Handlers[phase].TakeWhile(_ => !param.Status.IsInterrupt()))
             {
@@ -54,7 +54,7 @@ namespace StarGate
             { StarPhase.Unload ,new List<StarHandler>()}
         };
 
-        public async Task<StarResult> InvokeAsync(StarParam param) => await Task.Run(() => Invoke(param));
+        public async Task<StarResult> InvokeAsync(IStarParam param) => await Task.Run(() => Invoke(param));
 
         public string Name { get; }
         public object Key { get; }
@@ -64,7 +64,7 @@ namespace StarGate
     internal class Star<T> : Star, IStar<T>
     {
         public Star(string name, object key, IStarGate starGate) : base(name, key, starGate) { }
-        public new StarResult<T> Invoke(StarParam param)
+        public new StarResult<T> Invoke(IStarParam param)
         {
             T? result = default;
             InvokePhase(StarPhase.Pre, param);
@@ -86,7 +86,7 @@ namespace StarGate
             return (result, param.Status);
         }
 
-        public new async Task<StarResult<T>> InvokeAsync(StarParam param) => await Task.Run(() => Invoke(param));
+        public new async Task<StarResult<T>> InvokeAsync(IStarParam param) => await Task.Run(() => Invoke(param));
 
         public void RegisterHandler(Functor<T> handler, StarPhase phase)
         {
