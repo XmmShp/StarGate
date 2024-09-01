@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<TargetFramework>net5.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Shoming</Authors>
 		<Copyright>Copyright (c) 2024 XmmShp</Copyright>
-		<PackageId>EventBusNet8</PackageId>
+		<PackageId>StarGate</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/XmmShp/EventBusNet8.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/XmmShp/StarGate.git</RepositoryUrl>
 		<PackageTags>Event;EventBus;PluginSystem;</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Version>1.4.3</Version>
 		<PackageProjectUrl>https://www.nuget.org/packages/EventBusNet8</PackageProjectUrl>
-		<Title>EventBus</Title>
+		<Title>StarGate</Title>
 	</PropertyGroup>
 
 	<ItemGroup>
