@@ -15,65 +15,67 @@ namespace EventBusNet8
     {
         private readonly object _nullKey = new NullKey();
 
+        #region interfaces
         public void RemoveStar(IStar star) => RemoveStar(star.Name, star.Key, new StarParam(), false);
-        public void RemoveStar(string starName, IStarParam param) => RemoveStar(starName, StarKey.All, param, true);
-        public void RemoveStar(string starName) => RemoveStar(starName, new StarParam());
 
-        public bool TryAllocateStar(string starName, object? key, out IStar value)
+        public IStar AllocateStar(string starName, object? key)
         {
             if (key == StarKey.All || key == StarKey.SomeOne || key == StarKey.SomeOneButNullPrefer)
             {
-                value = default!;
-                return false;
+                throw new ArgumentException("Specific Key is not allowed here.");
             }
             key ??= _nullKey;
-            if (_stars.TryGetValue(starName, out var refs) && refs.TryGetValue(key, out var cur) && cur.TryGetTarget(out _))
+            if (_stars.TryGetValue(starName, out var refs)
+                && refs.TryGetValue(key, out var cur)
+                && cur.TryGetTarget(out _))
             {
-                value = default!;
-                return false;
+                throw new ArgumentException($"Event {starName} was existed.");
             }
-            value = new Star(starName, key, this);
+            var star = new Star(starName, key, this);
             _stars.TryAdd(starName, new Dictionary<object, WeakReference<IStar>>());
-            _stars[starName][key] = new WeakReference<IStar>(value);
-            return true;
+            _stars[starName][key] = new WeakReference<IStar>(star);
+            return star;
         }
 
-        public bool TryAllocateStar<T>(string starName, object? key, out IStar<T> value)
+        public IStar<T> AllocateStar<T>(string starName, object? key)
         {
             if (key == StarKey.All || key == StarKey.SomeOne || key == StarKey.SomeOneButNullPrefer)
             {
-                value = default!;
-                return false;
+                throw new ArgumentException("Specific Key is not allowed here.");
             }
             key ??= _nullKey;
-            if (_stars.TryGetValue(starName, out var refs) && refs.TryGetValue(key, out var cur) && cur.TryGetTarget(out _))
+            if (_stars.TryGetValue(starName, out var refs)
+                && refs.TryGetValue(key, out var cur)
+                && cur.TryGetTarget(out _))
             {
-                value = default!;
-                return false;
+                throw new ArgumentException($"Event {starName} was existed.");
             }
-            value = new Star<T>(starName, key, this);
+            var star = new Star<T>(starName, key, this);
             _stars.TryAdd(starName, new Dictionary<object, WeakReference<IStar>>());
-            _stars[starName][key] = new WeakReference<IStar>(value);
-            return true;
+            _stars[starName][key] = new WeakReference<IStar>(star);
+            return star;
         }
 
-        public bool TrySubscribeStar(string starName, object? key, Functor handler, StarPhase phase)
+        public void SubscribeStar(string starName, object? key, Functor handler, StarPhase phase = StarPhase.On)
         {
-            if (!_stars.TryGetValue(starName, out var events)) return false;//no event
+            if (!_stars.TryGetValue(starName, out var events))
+            {
+                throw new ArgumentException($"Event {starName} is not existed.");
+            } //no event
 
             if (key == StarKey.SomeOneButNullPrefer)
             {
                 // ReSharper disable once InvertIf
-                if (events.TryGetValue(_nullKey, out var nullEvent))//try to get event with null-key
+                if (events.TryGetValue(_nullKey, out var nullEvent)) //try to get event with null-key
                 {
                     if (nullEvent.TryGetTarget(out var nullTarget))
                     {
                         nullTarget.RegisterHandler(handler, phase);
-                        return true;
+                        return;
                     }
                     events.Remove(_nullKey);
                 }
-                return ListenSomeOne();
+                ListenSomeOne();
             }
 
             if (key == StarKey.All)
@@ -88,25 +90,33 @@ namespace EventBusNet8
                     eventTarget.RegisterHandler(handler, phase);
                     flag = true;
                 }
-                return flag;
+                if (!flag)
+                {
+                    throw new ArgumentException($"Event {starName} is not existed.");
+                }
             }
 
             if (key == StarKey.SomeOne)
             {
-                return ListenSomeOne();
+                ListenSomeOne();
             }
 
             key ??= _nullKey;
-            if (!events.TryGetValue(key, out var @ref)) return false;
+            if (!events.TryGetValue(key, out var @ref))
+            {
+                throw new ArgumentException($"Event {starName} with key: {key} is not existed.");
+            }
+
             if (!@ref.TryGetTarget(out var target))
             {
                 events.Remove(key);
-                return false;
+                return;
             }
-            target.RegisterHandler(handler, phase);
-            return true;
 
-            bool ListenSomeOne()
+            target.RegisterHandler(handler, phase);
+            return;
+
+            void ListenSomeOne()
             {
                 while (events.Count > 0)
                 {
@@ -117,15 +127,17 @@ namespace EventBusNet8
                         continue;
                     }
                     eventTarget.RegisterHandler(handler, phase);
-                    return true;
+                    return;
                 }
-                return false;
             }
         }
 
-        public bool TrySubscribeStar<T>(string starName, object? key, Functor<T> handler, StarPhase phase)
+        public void SubscribeStar<T>(string starName, object? key, Functor<T> handler, StarPhase phase = StarPhase.On)
         {
-            if (!_stars.TryGetValue(starName, out var events)) return false;//no event
+            if (!_stars.TryGetValue(starName, out var events))
+            {
+                throw new ArgumentException($"Event {starName} is not existed.");
+            } //no event
 
             if (key == StarKey.SomeOneButNullPrefer)
             {
@@ -135,11 +147,11 @@ namespace EventBusNet8
                     if (nullEvent.TryGetTarget(out var nullTarget) && nullTarget is IStar<T> nullTargetT)
                     {
                         nullTargetT.RegisterHandler(handler, phase);
-                        return true;
+                        return;
                     }
                     events.Remove(_nullKey);
                 }
-                return ListenSomeOne();
+                ListenSomeOne();
             }
 
             if (key == StarKey.All)
@@ -154,26 +166,37 @@ namespace EventBusNet8
                     eventTargetT.RegisterHandler(handler, phase);
                     flag = true;
                 }
-                return flag;
+
+                if (!flag)
+                {
+                    throw new ArgumentException($"Event {starName} is not existed.");
+                }
             }
 
             if (key == StarKey.SomeOne)
             {
-                return ListenSomeOne();
+                ListenSomeOne();
             }
 
             key ??= _nullKey;
-            if (!events.TryGetValue(key, out var @ref)) return false;
+            if (!events.TryGetValue(key, out var @ref))
+            {
+                throw new ArgumentException($"Event {starName} with key: {key} is not existed.");
+            }
             if (!@ref.TryGetTarget(out var target))
             {
                 events.Remove(key);
-                return false;
+                return;
             }
-            if (target is not IStar<T> targetT) return false;
-            targetT.RegisterHandler(handler, phase);
-            return true;
 
-            bool ListenSomeOne()
+            if (target is not IStar<T> targetT)
+            {
+                throw new InvalidCastException($"Event {starName} with key:{key} is not of type {typeof(T).Name}");
+            }
+            targetT.RegisterHandler(handler, phase);
+            return;
+
+            void ListenSomeOne()
             {
                 while (events.Count > 0)
                 {
@@ -186,13 +209,17 @@ namespace EventBusNet8
 
                     if (eventTarget is not IStar<T> eventTargetT) continue;
                     eventTargetT.RegisterHandler(handler, phase);
-                    return true;
-
+                    return;
                 }
-                return false;
             }
         }
 
+        public void RemoveStar(IStar star) => RemoveStar(star.Name, star.Key, new StarParam(), false);
+
+        #endregion
+
+        public void RemoveStar(string starName, StarParam param) => RemoveStar(starName, StarKey.All, param, true);
+        public void RemoveStar(string starName) => RemoveStar(starName, new StarParam());
         public void RemoveStar(string starName, object? key, IStarParam param, bool doUnload)
         {
             if (!_stars.TryGetValue(starName, out var events)) return;
@@ -200,9 +227,9 @@ namespace EventBusNet8
             {
                 if (doUnload)
                 {
-                    foreach (var eventKv in events)
+                    foreach (var @event in events.Values)
                     {
-                        if (eventKv.Value.TryGetTarget(out var eventTarget))
+                        if (@event.TryGetTarget(out var eventTarget))
                             eventTarget.Unload(param);
                     }
                 }
