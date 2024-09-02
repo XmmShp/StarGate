@@ -21,6 +21,7 @@ namespace StarGate
                 Push(value);
             }
         }
+
         public StarParam(IDictionary values)
         {
             _values = new List<object?>();

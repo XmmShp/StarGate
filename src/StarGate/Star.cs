@@ -16,7 +16,7 @@ namespace StarGate
             _starGate = starGate;
         }
 
-        private async Task<IList<T>> InvokePhase(StarPhase phase, IStarParam param)
+        private async Task<IList<T>> InvokePhaseAsync(StarPhase phase, IStarParam param)
         {
             var results = new List<T>();
             var tasks = _handlers[phase].Select(handler => Task.Run(() => handler.Invoke(param))).ToList();
@@ -31,31 +31,50 @@ namespace StarGate
             return results;
         }
 
-        public async Task Unload(IStarParam param)
+        private IList<T> InvokePhase(StarPhase phase, IStarParam param) => _handlers[phase].Select(handler => handler.Invoke(param)).ToList();
+
+        public void Unload(IStarParam param)
         {
-            await InvokePhase(StarPhase.Unload, param);
+            InvokePhase(StarPhase.Unload, param);
             _starGate.RemoveStar(this);
         }
 
-        public async Task<IList<T>> Invoke(IStarParam param)
+        public async Task UnloadAsync(IStarParam param)
+        {
+            await InvokePhaseAsync(StarPhase.Unload, param);
+            _starGate.RemoveStar(this);
+        }
+
+        public IList<T> Invoke(IStarParam param)
         {
             var results = new List<T>();
-            results.AddRange(await InvokePhase(StarPhase.Pre, param));
+            results.AddRange(InvokePhase(StarPhase.Pre, param));
             if (!param.Status.IsInterrupted())
-                results.AddRange(await InvokePhase(StarPhase.On, param));
+                results.AddRange(InvokePhase(StarPhase.On, param));
             if (!param.Status.IsInterrupted())
-                results.AddRange(await InvokePhase(StarPhase.Post, param));
+                results.AddRange(InvokePhase(StarPhase.Post, param));
             return results;
         }
 
-        public void RegisterHandler(Functor<T> handler, StarPhase phase)
+        public async Task<IList<T>> InvokeAsync(IStarParam param)
         {
-            _handlers[phase].Add(new StarHandler<T>(handler));
+            var results = new List<T>();
+            results.AddRange(await InvokePhaseAsync(StarPhase.Pre, param));
+            if (!param.Status.IsInterrupted())
+                results.AddRange(await InvokePhaseAsync(StarPhase.On, param));
+            if (!param.Status.IsInterrupted())
+                results.AddRange(await InvokePhaseAsync(StarPhase.Post, param));
+            return results;
         }
+
+        public void RegisterHandler(Functor<T> handler, StarPhase phase) => _handlers[phase].Add(new StarHandler<T>(handler));
 
         private readonly Dictionary<StarPhase, List<StarHandler<T>>> _handlers = new()
         {
+            { StarPhase.Pre ,new List<StarHandler<T>>()},
             { StarPhase.On ,new List<StarHandler<T>>()},
+            { StarPhase.Post ,new List<StarHandler<T>>()},
+            { StarPhase.Unload ,new List<StarHandler<T>>()},
         };
 
         public string Name { get; }

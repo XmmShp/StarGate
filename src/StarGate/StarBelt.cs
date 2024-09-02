@@ -9,6 +9,7 @@ namespace StarGate
     public class StarBelt<T> : IStarBelt<T>
     {
         public StarBelt() { _handlers.Add(new NullStarHandler<T>()); }
+
         public T Invoke(IStarParam param)
         {
             T result = default!;

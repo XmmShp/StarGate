@@ -1,12 +1,11 @@
-﻿using StarGate;
-using StarGate.Abstractions;
+﻿using StarGate.Abstractions;
 using StarGate.Adapter;
 using StarGate.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EventBusNet8
+namespace StarGate
 {
     internal class NullKey { }
 
