@@ -1,16 +1,13 @@
 # StarGate
 
-用于在 .NET 中方便地使用 发布/订阅模式 与 责任链模式的库
+A library designed to facilitate the use of the Publish/Subscribe pattern and the Chain of Responsibility pattern within .NET applications.
 
-## 这个库与使用原生event有什么区别
+## What are the differences between this library and using native events?
 
-- 提供了高度封装的事件总线 `StarGate`
-- 提供了高度封装的责任链 `StarBelt`
-- 支持跨 Assembly 订阅事件
-- 支持异步执行回调函数
-- 支持监听同一事件的不同阶段
-- 支持打断事件
-- 支持获取多个事件的返回值
-
-
-
+- Provides a highly encapsulated event bus called `StarGate`.
+- Offers a highly encapsulated chain of responsibility called `StarBelt`.
+- Supports subscribing to events across different Assemblies.
+- Enables asynchronous execution of callback functions.
+- Allows for listening to different stages of the same event.
+- Includes support for interrupting events.
+- Enables capturing return values from multiple events.
