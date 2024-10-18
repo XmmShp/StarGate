@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StarGate.Attributes;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace StarGate.Extensions
@@ -9,28 +11,23 @@ namespace StarGate.Extensions
     {
         public static IServiceCollection AddStarTrain(this IServiceCollection collection, Assembly assembly)
         {
-            var providerTypes = assembly.GetTypes();
+            var observerInfos = new Dictionary<string, List<MethodInfo>>();
+            var observerMethods = assembly.GetTypes()
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(m => m.GetCustomAttributes<StarObserverAttribute>(true).Any()));
 
-            foreach (var type in providerTypes)
+            foreach (var method in observerMethods)
             {
-                if (type.GetCustomAttribute<StarProviderAttribute>() is { } t)
+                var attributes = method.GetCustomAttributes<StarObserverAttribute>(true);
+                foreach (var attribute in attributes)
                 {
-
+                    collection.Add(new ServiceDescriptor(method.ReflectedType!, method.ReflectedType!, attribute.ScopeType));
+                    observerInfos.TryAdd(attribute.Name, new List<MethodInfo>());
+                    observerInfos[attribute.Name].Add(method);
                 }
             }
 
-            foreach (var provider in providerTypes)
-            {
-                Providers[provider.Name] = Activator.CreateInstance(provider.Type);
-                RegisterObservers(provider.Name, provider.Type, assembly, collection);
-            }
-
-            // 注册 Providers 到 DI 容器
-            foreach (var provider in Providers)
-            {
-                collection.AddSingleton(provider.Value);
-            }
-
+            collection.AddSingleton(provider => new StarTrain(provider, observerInfos));
             return collection;
         }
 

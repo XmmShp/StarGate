@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StarGate.Abstractions;
+using StarGate.Fundamental;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,15 +31,12 @@ namespace StarGate
             {
                 if (observerMethod.ReflectedType is null)
                 {
-                    observerMethod.Invoke(null, new object?[] { param });
+                    ret.Add(MethodHelper.GetResult<T>(observerMethod, null, param));
                     continue;
                 }
 
                 var service = scope.ServiceProvider.GetRequiredService(observerMethod.ReflectedType);
-                if (observerMethod.Invoke(service, new object?[] { param }) is T result)
-                {
-                    ret.Add(result);
-                }
+                ret.Add(MethodHelper.GetResult<T>(observerMethod, service, param));
             }
             return ret;
         }
@@ -52,42 +50,16 @@ namespace StarGate
             {
                 if (observerMethod.ReflectedType is null)
                 {
-                    tasks.Add(Task.Run(() => (T)observerMethod.Invoke(null, new object?[] { param })!));
+                    tasks.Add(MethodHelper.GetTask<T>(observerMethod, null, param));
                     continue;
                 }
 
                 var service = scope.ServiceProvider.GetRequiredService(observerMethod.ReflectedType);
-                var task = Task.Run(async () =>
-                {
-                    try
-                    {
-                        var returnType = observerMethod.ReturnType;
-                        if (returnType.IsAssignableFrom(typeof(Task<T>)))
-                        {
-                            return ((Task<T>)observerMethod.Invoke(service, new object?[] { param })!).GetAwaiter().GetResult();
-                        }
-
-                        if (returnType.IsAssignableFrom(typeof(Task)))
-                        {
-                            await (Task)observerMethod.Invoke(service, new object?[] { param })!;
-                            return default;
-                        }
-
-                        var result = observerMethod.Invoke(service, new object?[] { param });
-                        return (T)result!;
-                    }
-                    catch (TargetInvocationException ex)
-                    {
-                        throw ex.InnerException ?? ex;
-                    }
-                });
-
-                tasks.Add(task!);
+                tasks.Add(MethodHelper.GetTask<T>(observerMethod, service, param));
             }
 
             await Task.WhenAll(tasks);
 
-            // 收集结果
             var results = tasks.Select(task => task.Result).ToList();
             return results;
         }
