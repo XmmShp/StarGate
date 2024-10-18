@@ -7,13 +7,9 @@ using System.Linq;
 
 namespace StarGate
 {
-    internal class NullKey { }
-
 
     public class StarGate : IStarGate
     {
-        private readonly object _nullKey = new NullKey();
-
         #region interfaces
 
         public IStar<T> AllocateStar<T>(string starName, object? key)
@@ -22,7 +18,7 @@ namespace StarGate
             {
                 throw new ArgumentException("Specific Key is not allowed here.");
             }
-            key ??= _nullKey;
+            key ??= StarKey.NullKey;
             if (_stars.TryGetValue(starName, out var refs)
                 && refs.TryGetValue(key, out var cur)
                 && cur.TryGetTarget(out _))
@@ -44,14 +40,14 @@ namespace StarGate
             if (key == StarKey.SomeOneButNullPrefer)
             {
                 // ReSharper disable once InvertIf
-                if (events.TryGetValue(_nullKey, out var nullEvent)) //try to get event with null-key
+                if (events.TryGetValue(StarKey.NullKey, out var nullEvent)) //try to get event with null-key
                 {
                     if (nullEvent.TryGetTarget(out var nullTarget) && nullTarget is IStar<T> nullTargetT)
                     {
                         nullTargetT.RegisterHandler(handler, phase);
                         return;
                     }
-                    events.Remove(_nullKey);
+                    events.Remove(StarKey.NullKey);
                 }
                 ListenSomeOne();
             }
@@ -80,7 +76,7 @@ namespace StarGate
                 ListenSomeOne();
             }
 
-            key ??= _nullKey;
+            key ??= StarKey.NullKey;
             if (!events.TryGetValue(key, out var @ref))
             {
                 throw new ArgumentException($"Event {starName} with key: {key} is not existed.");
@@ -144,7 +140,7 @@ namespace StarGate
             }
             if (key == StarKey.SomeOneButNullPrefer)
             {
-                if (events.TryGetValue(_nullKey, out var nullEvent))
+                if (events.TryGetValue(StarKey.NullKey, out var nullEvent))
                 {
                     if (nullEvent.TryGetTarget(out var nullTarget))
                     {
@@ -152,13 +148,13 @@ namespace StarGate
                         {
                             nullTarget.Unload(param);
                         }
-                        events.Remove(_nullKey);
+                        events.Remove(StarKey.NullKey);
                     }
                 }
                 RemoveSomeOne();
             }
 
-            key ??= _nullKey;
+            key ??= StarKey.NullKey;
             if (!events.TryGetValue(key, out var @ref)) return;
             if (@ref.TryGetTarget(out var target))
             {
