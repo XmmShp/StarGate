@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using StarGate.Abstractions;
 using StarGate.Attributes;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace StarGate.Extensions
                 }
             }
 
-            collection.AddSingleton(provider => new StarTrain(provider, observerInfos));
+            collection.AddSingleton<IStarTrain>(provider => new StarTrain(provider, observerInfos));
             return collection;
         }
 
