@@ -26,7 +26,7 @@ namespace StarGate
         {
             using var scope = _provider.CreateScope();
             var ret = new List<T>();
-            var observers = _observers[starName];
+            if (!_observers.TryGetValue(starName, out var observers)) return default!;
             foreach (var observerMethod in observers)
             {
                 if (observerMethod.ReflectedType is null)
@@ -45,7 +45,7 @@ namespace StarGate
         {
             using var scope = _provider.CreateScope();
             var tasks = new List<Task<T>>();
-            var observers = _observers[starName];
+            if (!_observers.TryGetValue(starName, out var observers)) return default!;
             foreach (var observerMethod in observers)
             {
                 if (observerMethod.ReflectedType is null)
