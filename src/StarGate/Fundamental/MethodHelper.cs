@@ -1,44 +1,41 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace StarGate.Fundamental;
 
 internal static class MethodHelper
 {
-    internal static T GetResult<T>(MethodInfo method, object? target, params object?[]? param)
+    internal static object? GetResult(MethodInfo method, object? target, params object?[]? param)
     {
         var returnType = method.ReturnType;
-        if (returnType.IsAssignableFrom(typeof(Task<T>)))
-        {
-            return ((Task<T>)method.Invoke(target, param)!).GetAwaiter().GetResult();
-        }
 
-        if (returnType.IsAssignableFrom(typeof(Task)))
+        // Task<T>
+        if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Task<>))
         {
-            ((Task)method.Invoke(target, param)!).GetAwaiter().GetResult();
+            var taskType = returnType.GetGenericArguments()[0];
+
+            if (method.Invoke(target, param) is not Task taskInstance)
+                throw new InvalidOperationException("Method invocation returned null for Task.");
+
+            if (taskType != typeof(void)) return ((Task<object>)taskInstance).GetAwaiter().GetResult();
+
+            taskInstance.GetAwaiter().GetResult();
             return default!;
         }
 
+        // Task
+        if (returnType == typeof(Task))
+        {
+            if (method.Invoke(target, param) is not Task taskInstance)
+                throw new InvalidOperationException("Method invocation returned null for Task.");
+
+            taskInstance.GetAwaiter().GetResult();
+            return default!;
+        }
+
+        // SyncMethod
         var result = method.Invoke(target, param);
-        return (T)result!;
-    }
-
-    internal static Task<T> GetTask<T>(MethodInfo method, object? target, params object?[]? param)
-    {
-        var returnType = method.ReturnType;
-        if (returnType.IsAssignableFrom(typeof(Task<T>)))
-        {
-            return (Task<T>)method.Invoke(target, param)!;
-        }
-
-        if (returnType.IsAssignableFrom(typeof(Task)))
-        {
-            return FromTask((Task)method.Invoke(target, param)!);
-        }
-
-        var result = Task.Run(() => (T)method.Invoke(target, param)!);
         return result;
-
-        Task<T> FromTask(Task task) => task.ContinueWith(_ => default(T))!;
     }
 }
