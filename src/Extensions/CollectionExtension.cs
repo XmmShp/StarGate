@@ -14,7 +14,7 @@ namespace StarGate.Extensions
         {
             var observerInfos = new Dictionary<string, List<MethodInfo>>();
             var observerMethods = assembly.GetTypes()
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
                     .Where(m => m.GetCustomAttributes<StarObserverAttribute>(true).Any()));
 
             foreach (var method in observerMethods)
@@ -22,9 +22,10 @@ namespace StarGate.Extensions
                 var attributes = method.GetCustomAttributes<StarObserverAttribute>(true);
                 foreach (var attribute in attributes)
                 {
-                    collection.Add(new ServiceDescriptor(method.ReflectedType!, method.ReflectedType!, attribute.ScopeType));
                     observerInfos.TryAdd(attribute.Name, new List<MethodInfo>());
                     observerInfos[attribute.Name].Add(method);
+                    if (method.ReflectedType is { } type)
+                        collection.Add(new ServiceDescriptor(type, type, attribute.ScopeType));
                 }
             }
 
