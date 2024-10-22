@@ -32,6 +32,9 @@ namespace StarGate.Extensions
             return collection;
         }
 
+        public static IServiceCollection AddStarTrain(this IServiceCollection collection) =>
+            collection.AddStarTrain(Assembly.GetCallingAssembly());
+
         public static IServiceCollection AddStarTrain(this IServiceCollection collection, Type type) =>
             collection.AddStarTrain(type.Assembly);
 

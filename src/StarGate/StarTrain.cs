@@ -4,6 +4,7 @@ using StarGate.Fundamental;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -22,11 +23,11 @@ namespace StarGate
         }
 
 
-        public IList Broadcast(Type responseType, string starName, IStarParam param)
+        public IList Broadcast(string starName, IStarParam param)
         {
             using var scope = _provider.CreateScope();
-            var ret = new List<object>();
-            if (!_observers.TryGetValue(starName, out var observers)) return default!;
+            var ret = new List<object?>();
+            if (!_observers.TryGetValue(starName, out var observers)) return ret;
             foreach (var observerMethod in observers)
             {
                 object? result;
@@ -34,22 +35,39 @@ namespace StarGate
                 if (observerMethod.ReflectedType is null)
                 {
                     result = MethodHelper.GetResult(observerMethod, null, param);
-                    if (responseType.IsInstanceOfType(result))
-                        ret.Add(result);
+                    ret.Add(result);
                     continue;
                 }
 
                 var service = scope.ServiceProvider.GetRequiredService(observerMethod.ReflectedType);
                 result = MethodHelper.GetResult(observerMethod, service, param);
-                if (responseType.IsInstanceOfType(result))
-                    ret.Add(result);
+                ret.Add(result);
             }
             return ret;
         }
 
-        public Task<IList> BroadcastAsync(Type responseType, string starName, IStarParam param)
+        public async Task<IList> BroadcastAsync(string starName, IStarParam param)
         {
-            throw new NotImplementedException();
+            using var scope = _provider.CreateScope();
+            var tasks = new List<Task<object?>>();
+
+            if (!_observers.TryGetValue(starName, out var observers)) return await Task.FromResult(tasks as IList);
+
+            foreach (var observerMethod in observers)
+            {
+                if (observerMethod.ReflectedType is null)
+                {
+                    tasks.Add(MethodHelper.GetAndStartTask(observerMethod, null, param));
+                    continue;
+                }
+
+                var service = scope.ServiceProvider.GetRequiredService(observerMethod.ReflectedType);
+                tasks.Add(MethodHelper.GetAndStartTask(observerMethod, service, param));
+            }
+
+            await Task.WhenAll(tasks);
+
+            return tasks.Select(task => task.Result).ToList();
         }
     }
 }

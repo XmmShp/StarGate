@@ -6,6 +6,19 @@ namespace StarGate.Fundamental;
 
 internal static class MethodHelper
 {
+    private static async Task<object?> FromTask(Task task)
+    {
+        await task;
+        try
+        {
+            return ((dynamic)task).Result;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     internal static object? GetResult(MethodInfo method, object? target, params object?[]? param)
     {
         var returnType = method.ReturnType;
@@ -13,15 +26,10 @@ internal static class MethodHelper
         // Task<T>
         if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Task<>))
         {
-            var taskType = returnType.GetGenericArguments()[0];
-
             if (method.Invoke(target, param) is not Task taskInstance)
                 throw new InvalidOperationException("Method invocation returned null for Task.");
 
-            if (taskType != typeof(void)) return ((Task<object>)taskInstance).GetAwaiter().GetResult();
-
-            taskInstance.GetAwaiter().GetResult();
-            return default!;
+            return FromTask(taskInstance).GetAwaiter().GetResult();
         }
 
         // Task
@@ -37,5 +45,31 @@ internal static class MethodHelper
         // SyncMethod
         var result = method.Invoke(target, param);
         return result;
+    }
+
+    internal static async Task<object?> GetAndStartTask(MethodInfo method, object? target, params object?[]? param)
+    {
+        var returnType = method.ReturnType;
+
+        // Task<T>
+        if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Task<>))
+        {
+            if (method.Invoke(target, param) is not Task taskInstance)
+                throw new InvalidOperationException("Method invocation returned null for Task.");
+
+            return await FromTask(taskInstance);
+        }
+
+        // Task
+        if (returnType == typeof(Task))
+        {
+            if (method.Invoke(target, param) is not Task taskInstance)
+                throw new InvalidOperationException("Method invocation returned null for Task.");
+
+            return await taskInstance.ContinueWith(_ => (object?)null);
+        }
+
+        // SyncMethod
+        return await Task.Run(() => method.Invoke(target, param));
     }
 }
