@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace StarGate.Extensions
 {
-    public static class AddStarGateExtension
+    public static class ServiceCollectionExtension
     {
         public static IServiceCollection AddStarTrain(this IServiceCollection collection, Assembly assembly)
         {
