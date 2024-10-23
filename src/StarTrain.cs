@@ -25,7 +25,6 @@ namespace StarGate
 
         public IList Broadcast(string starName, IStarParam param)
         {
-            using var scope = _provider.CreateScope();
             var ret = new List<object?>();
             if (!_observers.TryGetValue(starName, out var observers)) return ret;
             foreach (var observerMethod in observers)
@@ -39,7 +38,7 @@ namespace StarGate
                     continue;
                 }
 
-                var service = scope.ServiceProvider.GetRequiredService(observerMethod.ReflectedType);
+                var service = _provider.GetRequiredService(observerMethod.ReflectedType);
                 result = MethodHelper.GetResult(observerMethod, service, param);
                 ret.Add(result);
             }

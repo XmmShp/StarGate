@@ -29,7 +29,7 @@ namespace StarGate.Extensions
                 }
             }
 
-            collection.AddSingleton<IStarTrain>(provider => new StarTrain(provider, observerInfos));
+            collection.AddScoped<IStarTrain>(provider => new StarTrain(provider, observerInfos));
             return collection;
         }
 
