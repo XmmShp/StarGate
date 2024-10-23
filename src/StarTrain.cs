@@ -47,7 +47,6 @@ namespace StarGate
 
         public async Task<IList> BroadcastAsync(string starName, IStarParam param)
         {
-            using var scope = _provider.CreateScope();
             var tasks = new List<Task<object?>>();
 
             if (!_observers.TryGetValue(starName, out var observers)) return await Task.FromResult(tasks as IList);
@@ -60,7 +59,7 @@ namespace StarGate
                     continue;
                 }
 
-                var service = scope.ServiceProvider.GetRequiredService(observerMethod.ReflectedType);
+                var service = _provider.GetRequiredService(observerMethod.ReflectedType);
                 tasks.Add(MethodHelper.GetAndStartTask(observerMethod, service, param));
             }
 
